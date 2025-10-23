@@ -1,0 +1,37 @@
+{
+  "count": 4,
+  "departments": [
+    {
+      "_id": "68da4460282d4ed758c42bf7",
+      "name": "Computer Science and Engineering",
+      "category": "Engineering",
+      "createdAt": "2025-09-29T08:33:36.819Z",
+      "updatedAt": "2025-09-29T08:33:36.819Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da44c7282d4ed758c42bfa",
+      "name": "Electrical Engineering",
+      "category": "Engineering",
+      "createdAt": "2025-09-29T08:35:19.304Z",
+      "updatedAt": "2025-09-29T08:35:19.304Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da44e5282d4ed758c42bfc",
+      "name": "Mathematics",
+      "category": "Science",
+      "createdAt": "2025-09-29T08:35:49.606Z",
+      "updatedAt": "2025-09-29T08:35:49.606Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da4502282d4ed758c42bfe",
+      "name": "English",
+      "category": "Humanities",
+      "createdAt": "2025-09-29T08:36:18.833Z",
+      "updatedAt": "2025-09-29T08:36:18.833Z",
+      "__v": 0
+    }
+  ]
+}

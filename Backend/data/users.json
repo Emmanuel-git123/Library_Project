@@ -1,0 +1,110 @@
+{
+  "count": 5,
+  "users": [
+    {
+      "_id": "68de2e3894af1641b85095d1",
+      "name": "Alice Johnson",
+      "email": "alice.cse@example.com",
+      "password": "hashedpassword123",
+      "role": "Author",
+      "departmentId": {
+        "_id": "68da4460282d4ed758c42bf7",
+        "name": "Computer Science and Engineering"
+      },
+      "degreeType": "Btech",
+      "thesis": [
+        {
+          "_id": "68df401b94af1641b8509602",
+          "title": "Deep Learning Models for Natural Language Processing"
+        }
+      ],
+      "yearOfEnrollment": 2022,
+      "createdAt": "2025-10-02T07:48:08.747Z",
+      "updatedAt": "2025-10-02T11:08:55.877Z",
+      "__v": 0
+    },
+    {
+      "_id": "68de2e9194af1641b85095d6",
+      "name": "Dr. Robert Smith",
+      "email": "robert.smith@example.com",
+      "password": "hashedpassword456",
+      "role": "Supervisor",
+      "departmentId": {
+        "_id": "68da4460282d4ed758c42bf7",
+        "name": "Computer Science and Engineering"
+      },
+      "degreeType": "PhD",
+      "thesis": [
+        {
+          "_id": "68df401b94af1641b8509602",
+          "title": "Deep Learning Models for Natural Language Processing"
+        }
+      ],
+      "yearOfEnrollment": 2010,
+      "createdAt": "2025-10-02T07:49:37.653Z",
+      "updatedAt": "2025-10-02T11:13:15.532Z",
+      "__v": 0
+    },
+    {
+      "_id": "68de2ea794af1641b85095da",
+      "name": "Emily Davis",
+      "email": "emily.maths@example.com",
+      "password": "hashedpassword789",
+      "role": "Author",
+      "departmentId": {
+        "_id": "68da44e5282d4ed758c42bfc",
+        "name": "Mathematics"
+      },
+      "degreeType": "MSc",
+      "thesis": [
+        {
+          "_id": "68df402894af1641b8509603",
+          "title": "Applications of Linear Algebra in Cryptography"
+        }
+      ],
+      "yearOfEnrollment": 2021,
+      "createdAt": "2025-10-02T07:49:59.787Z",
+      "updatedAt": "2025-10-02T11:20:50.776Z",
+      "__v": 0
+    },
+    {
+      "_id": "68de2eb394af1641b85095dc",
+      "name": "Dr. John Williams",
+      "email": "john.williams@example.com",
+      "password": "hashedpassword321",
+      "role": "Supervisor",
+      "departmentId": {
+        "_id": "68da44c7282d4ed758c42bfa",
+        "name": "Electrical Engineering"
+      },
+      "degreeType": "PhD",
+      "thesis": [],
+      "yearOfEnrollment": 2008,
+      "createdAt": "2025-10-02T07:50:11.682Z",
+      "updatedAt": "2025-10-02T07:50:11.682Z",
+      "__v": 0
+    },
+    {
+      "_id": "68de2ebd94af1641b85095de",
+      "name": "Sophia Brown",
+      "email": "sophia.english@example.com",
+      "password": "hashedpassword654",
+      "role": "Author",
+      "departmentId": {
+        "_id": "68da4502282d4ed758c42bfe",
+        "name": "English"
+      },
+      "degreeType": "MA",
+      "thesis": [
+        {
+          "_id": "68df404394af1641b8509605",
+          "title": "Modern Poetry and its Socio-Cultural Impact"
+        }
+      ],
+      "yearOfEnrollment": 2023,
+      "createdAt": "2025-10-02T07:50:21.724Z",
+      "updatedAt": "2025-10-02T11:21:31.205Z",
+      "__v": 0
+    }
+  ]
+}

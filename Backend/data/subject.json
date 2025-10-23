@@ -1,0 +1,104 @@
+{
+  "count": 11,
+  "subjects": [
+    {
+      "_id": "68da47e8b985397cc3b236c5",
+      "name": "Artificial Intelligence",
+      "parent": null,
+      "departmentId": "68da4460282d4ed758c42bf7",
+      "createdAt": "2025-09-29T08:48:40.372Z",
+      "updatedAt": "2025-09-29T08:48:40.372Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da4829b985397cc3b236c7",
+      "name": "Machine Learning",
+      "parent": "68da47e8b985397cc3b236c5",
+      "departmentId": "68da4460282d4ed758c42bf7",
+      "createdAt": "2025-09-29T08:49:45.305Z",
+      "updatedAt": "2025-09-29T08:49:45.305Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da4858b985397cc3b236c9",
+      "name": "Deep Learning",
+      "parent": "68da47e8b985397cc3b236c5",
+      "departmentId": "68da4460282d4ed758c42bf7",
+      "createdAt": "2025-09-29T08:50:32.528Z",
+      "updatedAt": "2025-09-29T08:50:32.528Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da4868b985397cc3b236cb",
+      "name": "Data Structures",
+      "parent": null,
+      "departmentId": "68da4460282d4ed758c42bf7",
+      "createdAt": "2025-09-29T08:50:48.037Z",
+      "updatedAt": "2025-09-29T08:50:48.037Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da4891b985397cc3b236cd",
+      "name": "Graph Algorithms",
+      "parent": "68da4868b985397cc3b236cb",
+      "departmentId": "68da4460282d4ed758c42bf7",
+      "createdAt": "2025-09-29T08:51:29.802Z",
+      "updatedAt": "2025-09-29T08:51:29.802Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da48a0b985397cc3b236cf",
+      "name": "VLSI Design",
+      "parent": null,
+      "departmentId": "68da44c7282d4ed758c42bfa",
+      "createdAt": "2025-09-29T08:51:44.404Z",
+      "updatedAt": "2025-09-29T08:51:44.404Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da48bbb985397cc3b236d1",
+      "name": "Analog Circuits",
+      "parent": "68da48a0b985397cc3b236cf",
+      "departmentId": "68da44c7282d4ed758c42bfa",
+      "createdAt": "2025-09-29T08:52:11.051Z",
+      "updatedAt": "2025-09-29T08:52:11.051Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da48c5b985397cc3b236d3",
+      "name": "Calculus",
+      "parent": null,
+      "departmentId": "68da44e5282d4ed758c42bfc",
+      "createdAt": "2025-09-29T08:52:21.737Z",
+      "updatedAt": "2025-09-29T08:52:21.737Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da48efb985397cc3b236d5",
+      "name": "Linear Algebra",
+      "parent": "68da48c5b985397cc3b236d3",
+      "departmentId": "68da44e5282d4ed758c42bfc",
+      "createdAt": "2025-09-29T08:53:03.296Z",
+      "updatedAt": "2025-09-29T08:53:03.296Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da48f9b985397cc3b236d7",
+      "name": "Literature",
+      "parent": null,
+      "departmentId": "68da4502282d4ed758c42bfe",
+      "createdAt": "2025-09-29T08:53:13.434Z",
+      "updatedAt": "2025-09-29T08:53:13.434Z",
+      "__v": 0
+    },
+    {
+      "_id": "68da4910b985397cc3b236d9",
+      "name": "Poetry",
+      "parent": "68da48f9b985397cc3b236d7",
+      "departmentId": "68da4502282d4ed758c42bfe",
+      "createdAt": "2025-09-29T08:53:36.896Z",
+      "updatedAt": "2025-09-29T08:53:36.896Z",
+      "__v": 0
+    }
+  ]
+}

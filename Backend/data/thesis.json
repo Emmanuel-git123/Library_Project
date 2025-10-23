@@ -1,0 +1,105 @@
+{
+  "count": 5,
+  "required_thesis": [
+    {
+      "_id": "68df400894af1641b8509601",
+      "title": "Optimization of Graph Algorithms for Large-Scale Networks",
+      "abstract": "This thesis explores efficient algorithms for graph processing and optimization in large-scale networks, focusing on reducing complexity and improving runtime.",
+      "author": "68de2e3894af1641b85095d1",
+      "supervisor": "68de2e9194af1641b85095d6",
+      "departmentId": "68da4460282d4ed758c42bf7",
+      "subjectId": "68da4891b985397cc3b236cd",
+      "degreeType": "Btech",
+      "pdfUrl": "http://example.com/thesis/alice-graph.pdf",
+      "keywords": [
+        "Graph Theory",
+        "Optimization",
+        "Data Structures"
+      ],
+      "year": 2025,
+      "createdAt": "2025-10-02T12:30:00.000Z",
+      "updatedAt": "2025-10-02T12:30:00.000Z",
+      "__v": 0
+    },
+    {
+      "_id": "68df401b94af1641b8509602",
+      "title": "Deep Learning Models for Natural Language Processing",
+      "abstract": "This research investigates the application of deep learning models such as transformers to natural language tasks including sentiment analysis and text summarization.",
+      "author": "68de2e3894af1641b85095d1",
+      "supervisor": "68de2e9194af1641b85095d6",
+      "departmentId": "68da4460282d4ed758c42bf7",
+      "subjectId": "68da4858b985397cc3b236c9",
+      "degreeType": "Btech",
+      "pdfUrl": "http://example.com/thesis/alice-nlp.pdf",
+      "keywords": [
+        "Deep Learning",
+        "NLP",
+        "Transformers"
+      ],
+      "year": 2024,
+      "createdAt": "2025-10-02T12:35:00.000Z",
+      "updatedAt": "2025-10-02T12:35:00.000Z",
+      "__v": 0
+    },
+    {
+      "_id": "68df402894af1641b8509603",
+      "title": "Applications of Linear Algebra in Cryptography",
+      "abstract": "This thesis analyzes how linear algebra concepts can be applied in modern cryptographic algorithms, including lattice-based encryption.",
+      "author": "68de2ea794af1641b85095da",
+      "supervisor": "68de2eb394af1641b85095dc",
+      "departmentId": "68da44e5282d4ed758c42bfc",
+      "subjectId": "68da48efb985397cc3b236d5",
+      "degreeType": "MSc",
+      "pdfUrl": "http://example.com/thesis/emily-crypto.pdf",
+      "keywords": [
+        "Linear Algebra",
+        "Cryptography",
+        "Lattices"
+      ],
+      "year": 2024,
+      "createdAt": "2025-10-02T12:40:00.000Z",
+      "updatedAt": "2025-10-02T12:40:00.000Z",
+      "__v": 0
+    },
+    {
+      "_id": "68df403594af1641b8509604",
+      "title": "VLSI Optimization Techniques for Low Power Design",
+      "abstract": "The research presents low power design methodologies for VLSI circuits to improve energy efficiency while maintaining performance.",
+      "author": "68de2ea794af1641b85095da",
+      "supervisor": "68de2eb394af1641b85095dc",
+      "departmentId": "68da44c7282d4ed758c42bfa",
+      "subjectId": "68da48a0b985397cc3b236cf",
+      "degreeType": "MSc",
+      "pdfUrl": "http://example.com/thesis/emily-vlsi.pdf",
+      "keywords": [
+        "VLSI",
+        "Low Power",
+        "Circuit Design"
+      ],
+      "year": 2023,
+      "createdAt": "2025-10-02T12:45:00.000Z",
+      "updatedAt": "2025-10-02T12:45:00.000Z",
+      "__v": 0
+    },
+    {
+      "_id": "68df404394af1641b8509605",
+      "title": "Modern Poetry and its Socio-Cultural Impact",
+      "abstract": "This thesis studies the influence of modern English poetry on socio-cultural identity and its role in shaping literary trends.",
+      "author": "68de2ebd94af1641b85095de",
+      "supervisor": "68de2eb394af1641b85095dc",
+      "departmentId": "68da4502282d4ed758c42bfe",
+      "subjectId": "68da4910b985397cc3b236d9",
+      "degreeType": "MA",
+      "pdfUrl": "http://example.com/thesis/sophia-poetry.pdf",
+      "keywords": [
+        "Poetry",
+        "Culture",
+        "Modern Literature"
+      ],
+      "year": 2025,
+      "createdAt": "2025-10-02T12:50:00.000Z",
+      "updatedAt": "2025-10-02T12:50:00.000Z",
+      "__v": 0
+    }
+  ]
+}
