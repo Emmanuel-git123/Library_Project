@@ -60,7 +60,8 @@ const Department = () => {
     'Engineering': 'Engineering and Technology',
     'Science': 'Sciences',
     'Humanities': 'Social Studies',
-    'Management': 'Management'
+    'Management': 'Management',
+    'Computer Science Engineering':'CSE',
   }
 
   return (

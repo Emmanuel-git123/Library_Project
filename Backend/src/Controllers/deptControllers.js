@@ -7,7 +7,7 @@ const createDepartment = async (req, res) => {
         res.status(201).json({ message: "Department created", department: newDept });
     } catch (error) {
         console.error("Error creating department:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: error.message, error });
     }
 };
 
