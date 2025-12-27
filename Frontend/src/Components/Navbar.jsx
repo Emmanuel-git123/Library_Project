@@ -1,8 +1,10 @@
 import React from 'react'
 import banner from '../assets/nitt.png'
 import { Link } from 'react-router-dom'
+import { useState } from 'react';
 
 const Navbar = () => {
+    const [admin,setAdmin] = useState(true);
     return (
         <div>
             <div className='flex items-center justify-center py-3 bg-blue-950'>
@@ -18,7 +20,7 @@ const Navbar = () => {
                     <Link to="/view/author" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Authors</Link>
                     <Link to="/view/supervisor" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Supervisors</Link>
                     <Link to="/view/thesis_type" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Thesis Type</Link>
-                </div>
+                    {admin&&<Link to='/view/upload' className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center'>Upload Thesis</Link>}                </div>
                 <div className='border border-white px-3 flex justify-between bg-gray-300 py-0.5'>
                     <div className='flex gap-1 '>
                         <Link to="/login" className='underline text-indigo-700 text-sm hover:text-red-500'>Login</Link>
