@@ -2,7 +2,16 @@ const { Thesis } = require("../../models/Thesis")
 
 const createThesis = async (req, res) => {
     try {
-        const new_thesis = new Thesis(req.body);
+        console.log(req.body); // ✅ all fields
+        console.log(req.file); // ✅ pdf info
+
+        const data = {
+            ...req.body,
+            keywords: JSON.parse(req.body.keywords),
+            pdfUrl: req.file?.path
+        };
+
+        const new_thesis = new Thesis(data);
         await new_thesis.save();
         res.status(201).json({ message: "Thesis successfully created", thesis: new_thesis });
     } catch (error) {

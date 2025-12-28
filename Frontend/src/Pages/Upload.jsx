@@ -6,8 +6,10 @@ import { Navigate, useNavigate } from 'react-router-dom';
 const Upload = () => {
     const [title,setTitle] = useState("");
     const [abstract,setAbstract] = useState("");
-    const [author,setAuthor] = useState("");
-    const [supervisor,setSupervisor] = useState("");
+    const [author,setAuthor] = useState([]);
+    const [supervisor,setSupervisor] = useState([]);
+    const [authorId, setAuthorId] = useState("");
+    const [supervisorId, setSupervisorId] = useState("");
     const [departments, setDepartments] = useState([]);//all depts data
     const [dept,setDept] = useState("");//selected depts id
     const [subjects, setSubjects] = useState([]);//all subjs data
@@ -20,6 +22,7 @@ const Upload = () => {
     const navigate=useNavigate();
 
     useEffect(()=>{
+
         const fetchDepts=async()=>{
             try {
                 const res=await fetch("http://localhost:8080/api/depts")
@@ -31,26 +34,64 @@ const Upload = () => {
                     toast.error(deptData.message|| "Failed to fetch departments");
                 }
             } catch (error) {
-                console.error('Error fetching concerts:', error);
-                toast.error('Error fetching concerts');
+                console.error('Error fetching depts:', error);
+                toast.error('Error fetching depts');
+            }
+        }
+        const fetchAuthor=async()=>{
+            try {
+                const res=await fetch("http://localhost:8080/api/users?role=Author")
+                const data=await res.json();
+
+                if(res.ok){
+                    setAuthor(data.users);
+                }
+                else{
+                    toast.error(data.message|| "Failed to fetch authors");
+                }
+            } catch (error) {
+                console.error('Error fetching authors:', error);
+                toast.error('Error fetching authros');
+            }
+        }
+        const fetchSupervisor=async()=>{
+            try {
+                const res=await fetch("http://localhost:8080/api/users?role=Supervisor")
+                const data=await res.json();
+                if(res.ok){
+                    setSupervisor(data.users);
+                }
+                else{
+                    toast.error(data.message|| "Failed to fetch supervisors");
+                }
+            } catch (error) {
+                console.error('Error fetching supervisors:', error);
+                toast.error('Error fetching supervisors');
             }
         }
         fetchDepts();
+        fetchAuthor();
+        fetchSupervisor();
     },[])
 
     const handleSubmit=async(e)=>{
         e.preventDefault();
+        if (!authorId || !supervisorId || !dept || !degree) {
+            toast.error("Please fill all required fields");
+            return;
+        }
+
         const extractedYear = year ? Number(year.split("-")[0]) : "";
         const formData = new FormData();
         formData.append("title", title);
         formData.append("abstract", abstract);
-        formData.append("author", author);
-        formData.append("supervisor", supervisor);
+        formData.append("author", authorId);
+        formData.append("supervisor", supervisorId);
         formData.append("departmentId", dept);
         formData.append("subjectId", subj);
         formData.append("degreeType",degree);
         formData.append("pdf", pdfurl); 
-        formData.append("keywords", keywords);
+        formData.append("keywords",JSON.stringify(keywords.split(",").map(k => k.trim())));
         formData.append("year", extractedYear);
         
         try {
@@ -104,9 +145,23 @@ const Upload = () => {
             <label>Abstract:</label>
             <input value={abstract} onChange={(e)=>setAbstract(e.target.value)} type="text" className='border'/>
             <label>Author:</label>
-            <input value={author} onChange={(e)=>setAuthor(e.target.value)} type="text" className='border'/>
+            <select value={authorId} onChange={(e) => setAuthorId(e.target.value)} className='border'>
+            <option value="">Select Author</option>
+            {author.map(a => (
+                <option key={a._id} value={a._id}>
+                {a.name}
+                </option>
+            ))}
+            </select>            
             <label>Supervisor:</label>
-            <input value={supervisor} onChange={(e)=>setSupervisor(e.target.value)} type="text" className='border'/>
+            <select value={supervisorId} onChange={(e) => setSupervisorId(e.target.value)} className='border'>
+            <option value="">Select Supervisor</option>
+            {supervisor.map(a => (
+                <option key={a._id} value={a._id}>
+                {a.name}
+                </option>
+            ))}
+            </select> 
             <label>Department:</label>
             <select value={dept} onChange={handleDeptChange} className="border">
             <option value="">Select Department</option>
@@ -121,15 +176,14 @@ const Upload = () => {
             <option value="">Select Subject:</option>
             {subjects.map((d) => (
                 <option key={d._id} value={d._id}>
-                {d.name} ({d.category})
+                {d.name}
                 </option>
             ))}
             </select>
-            {/* <input value={subj} onChange={(e)=>setSubj(e.target.value)} type="text" className='border'/> */}
             <div>
                 <label>Degree Type:</label>
                 <div>
-                    {["BTech","MA","MSc","MTech","PhD"].map((deg)=>(
+                    {["Btech","MA","MSc","MTech","PhD"].map((deg)=>(
                         <div>
                             <input type="radio" value={deg} onChange={(e)=>setDegree(e.target.value)} checked={degree===deg} id={deg} className='border'/>
                             <label>{deg}</label>
