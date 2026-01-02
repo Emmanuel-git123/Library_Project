@@ -21,17 +21,18 @@ const Navbar = () => {
                     <Link to="/view/supervisor" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Supervisors</Link>
                     <Link to="/view/thesis_type" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Thesis Type</Link>
                     {admin&&<Link to='/view/upload' className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center'>Upload Thesis</Link>}                </div>
-                <div className='border border-white px-3 flex justify-between bg-gray-300 py-0.5'>
-                    <div className='flex gap-1 '>
-                        <Link to="/login" className='underline text-indigo-700 text-sm hover:text-red-500'>Login</Link>
+                <div className='border border-white px-3 flex justify-between gap-50 py-0.5'>
+                    <div className='flex gap-3'>
+                        <Link to="/login" className='underline text-indigo-700 text-xm hover:text-red-500'>Login</Link>
                         <div className='flex items-center text-xs text-gray-600'>|</div>
-                        <Link to="/register" className='underline text-indigo-700 text-sm hover:text-red-500'>Create Account</Link>
+                        <Link to="/register" className='underline text-indigo-700 text-xm hover:text-red-500'>Create Account</Link>
                     </div>
                     <div className='flex justify-center items-center gap-1'>
-                        <input type="text" className='bg-white text-xs border border-gray-500 px-0.5' />
-                        <div className='bg-[#204f76]  text-white text-xs border-2 border-gray-800 '>Search</div>
+                        <input type="text" className='search-bar bg-white text-xm border border-black-700 hover:border-2 h-7 w-70 rounded-md px-1' />
+                        <div className='bg-[#204f76]  text-white text-xm border-2 border-gray-800 w-20 flex justify-center hover:cursor-pointer'>Search</div>
                     </div>
                 </div>
+                <hr className='h-2'></hr>
             </div>
         </div>
     )
