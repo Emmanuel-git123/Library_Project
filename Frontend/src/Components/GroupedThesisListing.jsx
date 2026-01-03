@@ -58,7 +58,7 @@ const GroupedThesisListing = ({ theses, authors, grouping = 'No Grouping' }) => 
     const element = document.getElementById(`group-${letter}`)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
-    }
+    } 
   }
 
   return (

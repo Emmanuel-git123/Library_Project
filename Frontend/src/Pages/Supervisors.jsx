@@ -45,7 +45,7 @@ const Supervisors = () => {
     <div className="flex justify-center">
       <div className="flex flex-col w-2xl">
         <h2 className="font-semibold text-lg text-gray-600 mb-2 text-center">Browse by Supervisors</h2>
-        <p className="text-sm font-[400] mb-2">Please select a value to browse from the list below.</p>
+        <p className="text-sm mb-2">Please select a value to browse from the list below.</p>
 
         <div className="flex flex-col ml-5">
           <ul className="space-y-1 text-left">

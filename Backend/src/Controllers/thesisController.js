@@ -2,8 +2,6 @@ const { Thesis } = require("../../models/Thesis")
 
 const createThesis = async (req, res) => {
     try {
-        console.log(req.body); // ✅ all fields
-        console.log(req.file); // ✅ pdf info
 
         const data = {
             ...req.body,

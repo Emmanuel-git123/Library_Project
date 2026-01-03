@@ -97,6 +97,9 @@ const Upload = () => {
         try {
             const res=await fetch('http://localhost:8080/api/thesis',{
                 method:'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
                 body:formData,
             });
             if(res.ok){
@@ -146,7 +149,9 @@ const Upload = () => {
             <input value={abstract} onChange={(e)=>setAbstract(e.target.value)} type="text" className='border'/>
             <label>Author:</label>
             <select value={authorId} onChange={(e) => setAuthorId(e.target.value)} className='border'>
+
             <option value="">Select Author</option>
+            <option value="new">+ Add a new author</option>
             {author.map(a => (
                 <option key={a._id} value={a._id}>
                 {a.name}
@@ -184,7 +189,7 @@ const Upload = () => {
                 <label>Degree Type:</label>
                 <div>
                     {["Btech","MA","MSc","MTech","PhD"].map((deg)=>(
-                        <div>
+                        <div key={deg}>
                             <input type="radio" value={deg} onChange={(e)=>setDegree(e.target.value)} checked={degree===deg} id={deg} className='border'/>
                             <label>{deg}</label>
                         </div>

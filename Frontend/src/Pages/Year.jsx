@@ -26,7 +26,7 @@ const Year = () => {
         <div className='flex justify-center'>
             <div className='flex flex-col w-2xl'>
                 <div className='font-semibold text-lg text-gray-600 mb-2 text-center'>Browse By Year</div>
-                <div className='text-sm font-[500] mb-4'>Please select a value to browse from the list below.</div>
+                <div className='text-sm mb-4'>Please select a value to browse from the list below.</div>
                 
                 <ul className="ml-4 flex flex-col list-disc list-inside text-sm">
                     {year && year.map(([y, count], index) => (

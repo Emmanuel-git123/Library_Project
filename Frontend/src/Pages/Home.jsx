@@ -5,12 +5,15 @@ import icon from '../assets/icon.png'
 const Home = () => {
   return (
     <div>
-      <div>
+      <div className='flex flex-col items-center'>
         <div className='flex justify-center items-center font-bold text-gray-600 text-lg mb-2'>Welcome to ethesis</div>
         <div className=' flex justify-center items-center gap-2'>
           <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>Atom</p></div>
           <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>RSS 1.0</p></div>
           <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>RSS 2.0</p></div>
+        </div>
+        <div>
+          <input type="text" className="border border-black text-black my-2 bg-blue-300 w-xl px-4 py-2 rounded-2xl text-lg " placeholder='Search theses, authors, supervisors..' />
         </div>
         <div className='flex items-center justify-center mb-2'>
           <div className='grid grid-cols-3 w-fit bg-gray-300'>
