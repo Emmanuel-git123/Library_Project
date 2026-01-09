@@ -7,8 +7,8 @@ const Home = () => {
   return (
     <div>
       <div>
-        <div className="px-10 py-0.5 flex justify-center">
-            <img src={image} alt="library-picture" className="w-5xl object-cover"></img>
+        <div className="px-10 py-3 flex justify-center">
+            <img src={image} alt="library-picture" className="w-6xl object-cover"></img>
         </div>
         <div className='flex justify-center items-center font-bold text-gray-600 text-lg mb-2'>Welcome to ethesis</div>
         {/* <div className=' flex justify-center items-center gap-2'>
@@ -76,7 +76,7 @@ const Home = () => {
         <div className="flex justify-center">
           <div className="h-170 w-300 border flex flex-col justify-evenly items-center">
             <div className="h-30 w-290 border flex">
-              <div className="h-26 w-26 border mt-2 ml-2">Photo</div>
+              <div className="h-26 w-26 border-2 border-opacity-50 mt-2 ml-2">Photo</div>
               <div className="h-26 w-200 border mt-2 ml-2">
                 <div>Thesis Name</div>
                 <div>Author Name</div>
