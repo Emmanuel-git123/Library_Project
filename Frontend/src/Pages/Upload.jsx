@@ -19,6 +19,12 @@ const Upload = () => {
     const [keywords,setKeywords] = useState("");
     const [year,setYear] = useState("");
 
+    const [newAuthor,setNewAuthor] = useState(false);
+    const [authorName,setAuthorName] = useState("");
+    const [authorEmail,setAuthorEmail] = useState("");
+    const [authorDept,setAuthorDept] = useState("");
+    const [authorDegree,setAuthorDegree] = useState("");
+
     const navigate=useNavigate();
 
     useEffect(()=>{
@@ -76,6 +82,8 @@ const Upload = () => {
 
     const handleSubmit=async(e)=>{
         e.preventDefault();
+        const token = localStorage.getItem("token");
+
         if (!authorId || !supervisorId || !dept || !degree) {
             toast.error("Please fill all required fields");
             return;
@@ -139,16 +147,82 @@ const Upload = () => {
         fetchSubjects();
     }
     
+    const handleNewAuthor=async(e)=>{
+        e.preventDefault();
+        const token = localStorage.getItem("token");
+        if (!authorName || !authorDept || !authorDegree) {
+            toast.error("Please fill all required fields");
+            return;
+        }
+        try {
+            const data=await fetch("http://localhost:8080/api/users",{
+                method:"POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body:JSON.stringify({name:authorName,email:authorEmail,role:"Author",departmentId:authorDept,degreeType:authorDegree})
+            })
+            const res= await data.json();
+            if(data.ok){
+                toast.success("Author created suuccessfully");
+                window.location.reload();
+            }
+            else{
+                toast.error(res.message);
+            }
+        } catch (error) {
+             console.error('Error creating a new author:', error);
+            toast.error('Error creating author');
+        }
+    }
   return (
       <div>
-
-        <div className='flex flex-col'>
+        {newAuthor&&<div className=' flex flex-col  gap-2 w-lg '>
+                <div className='flex flex-col border p-3 w-lg gap-1'>
+                    <label>Name:</label>
+                    <input value={authorName} onChange={(e)=>setAuthorName(e.target.value)} type="text" className='border'/>
+                    <label>Email (optional):</label>
+                    <input value={authorEmail} onChange={(e)=>setAuthorEmail(e.target.value)} type="text" className='border'/>
+                    <label>Department:</label>
+                    <select value={authorDept} onChange={(e)=>setAuthorDept(e.target.value)} className="border">
+                    <option value="">Select Department</option>
+                    {departments.map((d) => (
+                        <option key={d._id} value={d._id}>
+                        {d.name} ({d.category})
+                        </option>
+                    ))}
+                    </select>
+                    <label>DegreeType:</label>
+                    <div>
+                    {["Btech","MA","MSc","MTech","PhD"].map((deg)=>(
+                        <div key={deg}>
+                            <input type="radio" value={deg} onChange={(e)=>setAuthorDegree(e.target.value)} checked={authorDegree===deg} id={deg} className='border'/>
+                            <label>{deg}</label>
+                        </div>
+                    ))}
+                </div>
+                    
+                </div>
+                <div className=' flex gap-3  flex-row-reverse'>
+                    <button onClick={(e)=>setNewAuthor(false)} className='border px-2 py-1 rounded bg-amber-200 '>Cancel</button>
+                    <button onClick={handleNewAuthor} className='border px-2 py-1 rounded bg-amber-200 '>Submit</button>
+                </div>
+            </div>}
+        <div className= {`flex flex-col`}>
             <label>Title:</label>
             <input value={title} onChange={(e)=>setTitle(e.target.value)} type="text" className='border'/>
             <label>Abstract:</label>
             <input value={abstract} onChange={(e)=>setAbstract(e.target.value)} type="text" className='border'/>
             <label>Author:</label>
-            <select value={authorId} onChange={(e) => setAuthorId(e.target.value)} className='border'>
+            <select value={authorId} onChange={(e) =>{
+                if(e.target.value=='new'){
+                    setNewAuthor(true);
+                }
+                else{
+                    setAuthorId(e.target.value);
+                }
+            }} className='border'>
 
             <option value="">Select Author</option>
             <option value="new">+ Add a new author</option>
