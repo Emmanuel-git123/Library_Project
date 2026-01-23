@@ -7,8 +7,9 @@ const Year = () => {
     useEffect(() => {
         const fetchYear = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/thesis`);
+                const response = await fetch(`http://localhost:8081/api/thesis`);
                 const data = await response.json();
+                console.log(data);
                 if (response.ok) {
                     const yearCount = {}; data.required_thesis.forEach(t => { yearCount[t.year] = (yearCount[t.year] || 0) + 1; });
                     const uniqueSortedYears = Object.entries(yearCount).sort((a, b) => b[0] - a[0]);

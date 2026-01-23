@@ -9,8 +9,8 @@ const Subject = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const subjectsRes = await fetch('http://localhost:8080/api/subjects')
-        const thesisRes = await fetch('http://localhost:8080/api/thesis')
+        const subjectsRes = await fetch('http://localhost:8081/api/subjects')
+        const thesisRes = await fetch('http://localhost:8081/api/thesis')
 
         const subjectsData = await subjectsRes.json()
         const thesisData = await thesisRes.json()

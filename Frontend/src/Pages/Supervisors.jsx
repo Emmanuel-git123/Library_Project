@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+
+const SUPERVISORS_PER_PAGE = 2;
 
 const Supervisors = () => {
   const [supervisors, setSupervisors] = useState([])
   const [thesisCounts, setThesisCounts] = useState({})
+  const [search,setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const usersRes = await fetch('http://localhost:8080/api/users')
+        const usersRes = await fetch('http://localhost:8081/api/users')
         const usersData = await usersRes.json()
         
-        const thesisRes = await fetch('http://localhost:8080/api/thesis')
+        const thesisRes = await fetch('http://localhost:8081/api/thesis')
         const thesisData = await thesisRes.json()
         
         if (usersRes.ok && thesisRes.ok) {
@@ -41,25 +46,60 @@ const Supervisors = () => {
     return thesisCounts[supervisorId] || 0
   }
 
-  return (
-    <div className="flex justify-center">
-      <div className="flex flex-col w-2xl">
-        <h2 className="font-semibold text-lg text-gray-600 mb-2 text-center">Browse by Supervisors</h2>
-        <p className="text-sm mb-2">Please select a value to browse from the list below.</p>
+  const indexOfLast = currentPage * SUPERVISORS_PER_PAGE;
+  const indexOfFirst = indexOfLast - SUPERVISORS_PER_PAGE;
+  const currentSupervisors = supervisors.slice(
+    indexOfFirst,
+    indexOfLast
+  );
+  
+  const totalPages = Math.ceil(
+    supervisors.length / SUPERVISORS_PER_PAGE
+  );
+  
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
-        <div className="flex flex-col ml-5">
-          <ul className="space-y-1 text-left">
-            {supervisors.map(supervisor => (
-              <li key={supervisor._id} className="list-disc list-inside text-sm">
-                <Link 
-                  to={`/view/supervisor/${supervisor._id}/years`} 
-                  className="text-indigo-700 underline hover:text-red-500"
-                >
+  return (
+    <div className="flex justify-center bg-[#EEEEEE]">
+      <div className="flex flex-col w-2xl">
+        <h2 className="font-bold text-3xl text-gray-700 mt-4 mb-1 text-center">Browse by Supervisors</h2>
+        <p className="text-xs mb-3 text-center">Please select a value to browse from the list below.</p>
+
+        <motion.div initial={{opacity:0, y:20}} animate={{opacity:1,y:0}} transition={{duration:0.6}} className='flex justify-center'>
+          <motion.input type='text' placeholder='Search Supervisors...' value={search} onChange={(e)=>setSearch(e.target.value)} className="w-100 border rounded-2xl px-4 py-2 text-sm shadow-md focus:outline-none focus:ring-1 focus:ring-blue-400 transition-all mb-10 hover:scale-105">
+          </motion.input>
+        </motion.div>
+
+        <div className="grid grid-cols-4 gap-4 text-sm text-center font-bold leading-6">
+          {currentSupervisors.map((supervisor) => (
+              <div key={supervisor._id} className="p-4 rounded-3xl shadow-lg bg-blue-400 text-black">
+                  <Link to={`/view/supervisor/${supervisor._id}/years`} className="no-underline">
                   {supervisor.name} ({getSupervisorCount(supervisor._id)})
-                </Link>
-              </li>
-            ))}
-          </ul>
+                  </Link>
+              </div>
+          ))}
+        </div>
+
+        <div className="flex justify-center gap-2 mt-8">
+          {Array.from({ length: totalPages }, (_, i) => {
+            const page = i + 1;
+            return (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`px-3 py-1 rounded-md text-sm font-medium transition
+                  ${
+                    currentPage === page
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-300 text-black hover:bg-gray-400"
+                  }`}
+              >
+                {page}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

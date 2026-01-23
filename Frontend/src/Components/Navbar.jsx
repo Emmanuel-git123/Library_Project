@@ -30,7 +30,7 @@ const Navbar = () => {
                 <img src={banner} alt="banner.jpeg" className='bg-blue-950'/>
             </div>
             <div>
-                <div className="flex items-center justify-evenly bg-blue-950 mb-1">
+                <div className="flex items-center justify-evenly bg-blue-950 mb-0.2">
                     <Link to="/" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Home</Link>
                     <Link to="/info" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>About</Link>
                     <Link to="/view/year" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Year</Link>
@@ -40,7 +40,7 @@ const Navbar = () => {
                     <Link to="/view/supervisor" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Supervisors</Link>
                     <Link to="/view/thesis_type" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Thesis Type</Link>
                     {token&&<Link to='/view/upload' className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center'>Upload Thesis</Link>}                </div>
-                <div className='border border-white px-3 flex justify-between bg-gray-300 py-0.5'>
+                <div className='border border-white px-3 flex justify-between py-0.5 bg-[#BDE8F5]'>
                     <div className='flex gap-1 '>
                         {token?
                         <Link to="/" onClick={handleLogOut} className='underline text-indigo-700 text-sm hover:text-red-500'>Log out</Link>
@@ -48,7 +48,6 @@ const Navbar = () => {
                         {token&&role=='HEAD_ADMIN'&&(
                             <button onClick={()=>navigate('/admin/invite')} className='px-3 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-xs'>Add Admin</button>
                         )}
-                        {/* <Link to='/admin/invite' className='mx-2 underline text-indigo-700 text-sm hover:text-red-500'>Add Admin</Link> */}
                     </div>
                     <div className="w-full max-w-xl px-4 mt-3">
                         <div className="flex items-center bg-white rounded-full shadow-lg px-4 py-2 gap-3 border hover:border-2">

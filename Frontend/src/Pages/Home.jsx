@@ -12,11 +12,6 @@ const Home = () => {
         </div>
       <div className='flex flex-col items-center'>
         <div className='flex justify-center items-center font-bold text-gray-600 text-lg mb-2'>Welcome to ethesis</div>
-        {/* <div className=' flex justify-center items-center gap-2'>
-          <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>Atom</p></div>
-          <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>RSS 1.0</p></div>
-          <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>RSS 2.0</p></div>
-        </div> */}
         <div className='flex items-center justify-center mb-2'>
           <div className='grid grid-cols-3 w-fit bg-gray-300'>
             <div className='flex flex-col border w-3xs p-1 text-sm'>

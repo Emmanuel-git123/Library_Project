@@ -25,7 +25,7 @@ const Upload = () => {
 
         const fetchDepts=async()=>{
             try {
-                const res=await fetch("http://localhost:8080/api/depts")
+                const res=await fetch("http://localhost:8081/api/depts")
                 const deptData=await res.json();
                 if(res.ok){
                     setDepartments(deptData.departments);
@@ -40,7 +40,7 @@ const Upload = () => {
         }
         const fetchAuthor=async()=>{
             try {
-                const res=await fetch("http://localhost:8080/api/users?role=Author")
+                const res=await fetch("http://localhost:8081/api/users?role=Author")
                 const data=await res.json();
 
                 if(res.ok){
@@ -56,7 +56,7 @@ const Upload = () => {
         }
         const fetchSupervisor=async()=>{
             try {
-                const res=await fetch("http://localhost:8080/api/users?role=Supervisor")
+                const res=await fetch("http://localhost:8081/api/users?role=Supervisor")
                 const data=await res.json();
                 if(res.ok){
                     setSupervisor(data.users);
@@ -95,7 +95,7 @@ const Upload = () => {
         formData.append("year", extractedYear);
         
         try {
-            const res=await fetch('http://localhost:8080/api/thesis',{
+            const res=await fetch('http://localhost:8081/api/thesis',{
                 method:'POST',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -123,7 +123,7 @@ const Upload = () => {
         setDept(deptId);
         const fetchSubjects=async()=>{
             try { 
-                const res=await fetch(`http://localhost:8080/api/subjects?departmentId=${deptId}`)
+                const res=await fetch(`http://localhost:8081/api/subjects?departmentId=${deptId}`)
                 const data=await res.json();
                 if(res.ok){
                     setSubjects(data.subjects);
