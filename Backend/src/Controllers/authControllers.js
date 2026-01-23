@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const dotenv=require('dotenv');
 
 const generateToken = (user) => {
     return jwt.sign(
