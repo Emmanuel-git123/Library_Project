@@ -24,7 +24,10 @@ const Navbar = () => {
                     {admin&&<Link to='/view/upload' className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center'>Upload Thesis</Link>}                </div>
                 <div className='border border-white px-3 flex justify-between gap-50 py-0.5'>
                     <div className='flex justify-center gap-3 mt-0'>
-                        <Link to="/login" className='underline text-indigo-700 text-xm hover:text-red-500'>Login</Link>
+                        <Link to="/login" className='group relative overflow-hidden text-sm w-36 bg-blue-950 h-6 text-center border-0 rounded-2xl text-white opacity-500 hover:bg-gray-900 focus:outline-3 focus-outline-offset-2 focus:outline-black'>
+                        <span className='absolute inset-0 bg-white opacity-30 scale-0 group-hover:scale-200 transition-transform duration-1000 rounded-2xl w-36'></span>
+                        <span className='relative z-10'>Login</span>
+                        </Link>
                         <div className='mt-1 text-xs text-gray-900'>|</div>
                         <Link to="/register" className='underline text-indigo-700 text-xm hover:text-red-500'>Create Account</Link>
                     </div>

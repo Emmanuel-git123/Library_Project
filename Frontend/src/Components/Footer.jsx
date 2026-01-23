@@ -7,24 +7,57 @@ import twitter from '../assets/x.png'
 
 const Footer = () => {
   return (
-    <div>
-        <div className='border border-gray-300 w-full mb-2'></div>
-        <div className='border w-full mb-1'></div>
-        <div className='flex justify-between items-start px-2'>
-            <div className='flex items-center justify-between w-full px-4'>
-                <div className='flex items-center gap-2'>
-                  <img src={logo} alt="NIT_Trichy_logo.jpg" className='size-10' title='NIT Tiruchirappalli'/>
-                  <a href="https://www.nitt.edu/" className='text-indigo-700 underline text-sm hover:text-red-500'>NIT Tiruchirappalli</a>
-                </div>
-                <div className="flex items-center gap-2">
-                  <a href="https://www.instagram.com/nit_tiruchirappalli/" target="_blank" rel="noopener noreferer"><img src={insta} alt="instagram handle.jpg" className='size-8' title='Insta handdle' /></a>
-                  <a href="https://in.linkedin.com/school/nittrichy/" target="_blank" rel="noopener noreferer"><img src={linkedin} alt="linkedin Handle.jpg" className='size-8' title="Linkedin Handle"/></a>
-                  <a href="https://www.youtube.com/channel/UCEPOEe5azp3FbUjvMwttPqw" target="_blank" rel="noopener noreferer"><img src={youtube} alt="youtube.jpg" className="size-8" title="youtube channel"/></a>
-                  <a href="https://x.com/ReachNITT" target="_blank" rel="noopener noreferer"><img src={twitter} alt="Twiiter.png" className='size-8'title="x handle" ></img></a>
-                </div>
-            </div>
-        </div>
-    </div>
+      <footer className="flex justify-between footer items-center p-4 bg-[#EDEDCE]">
+        <aside className="flex space-x-5">
+            <a href="https://www.nitt.edu/" target="_blank" rel="noopener noreferer"><img src={logo} alt="nittlogo" className='w-9 h-9' /></a>
+          <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
+        </aside>
+        <nav className="flex justify-end space-x-6">
+          <a href="https://x.com/ReachNITT" target="_blank" rel="noopener noreferer">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              className="fill-current">
+              <path
+                d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+            </svg>
+          </a>
+          <a href="https://www.instagram.com/nit_tiruchirappalli/" target="_blank" rel="noopener noreferer">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              className="fill-current">
+              <path d="M12 2c2.717 0 3.056.01 4.123.06 1.064.05 1.789.217 2.427.465.668.258 1.234.604 1.79 1.159.556.556.902 1.122 1.16 1.79.247.638.414 1.363.464 2.427.05 1.067.06 1.406.06 4.123s-.01 3.056-.06 4.123c-.05 1.064-.217 1.789-.465 2.427-.258.668-.604 1.234-1.159 1.79-.556.556-1.122.902-1.79 1.16-.638.247-1.363.414-2.427.464-1.067.05-1.406.06-4.123.06s-3.056-.01-4.123-.06c-1.064-.05-1.789-.217-2.427-.465-.668-.258-1.234-.604-1.79-1.159-.556-.556-.902-1.122-1.16-1.79-.247-.638-.414-1.363-.464-2.427C2.01 15.056 2 14.717 2 12s.01-3.056.06-4.123c.05-1.064.217-1.789.465-2.427.258-.668.604-1.234 1.159-1.79.556-.556 1.122-.902 1.79-1.16.638-.247 1.363-.414 2.427-.464C8.944 2.01 9.283 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.25A3.25 3.25 0 1 1 12 8.75a3.25 3.25 0 0 1 0 6.5zm5.406-8.719a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z" />
+            </svg>
+          </a>
+          <a href="https://www.youtube.com/channel/UCEPOEe5azp3FbUjvMwttPqw" target="_blank" rel="noopener noreferer">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              className="fill-current">
+              <path
+                d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
+            </svg>
+          </a>
+          <a href="https://www.facebook.com/NITT.Official/" target="_blank" rel="noreferer noopener">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              className="fill-current">
+              <path
+                d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
+            </svg>
+          </a>
+        </nav>
+      </footer>
   )
 }
 
