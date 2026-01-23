@@ -8,10 +8,10 @@ const Authors = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const usersRes = await fetch('http://localhost:8080/api/users')
+        const usersRes = await fetch('http://localhost:8081/api/users')
         const usersData = await usersRes.json()
         
-        const thesisRes = await fetch('http://localhost:8080/api/thesis')
+        const thesisRes = await fetch('http://localhost:8081/api/thesis')
         const thesisData = await thesisRes.json()
         
         if (usersRes.ok && thesisRes.ok) {

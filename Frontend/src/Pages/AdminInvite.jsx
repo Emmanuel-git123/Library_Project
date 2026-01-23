@@ -18,7 +18,7 @@ const AdminInvite = () => {
 
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:8080/api/auth/accept-invite", {
+      const res = await fetch("http://localhost:8081/api/auth/accept-invite", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

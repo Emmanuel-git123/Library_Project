@@ -1,5 +1,13 @@
 const { Thesis } = require("../../models/Thesis")
 
+const uploadPdf = async(req,res)=>{
+    console.log("smtg2");
+}
+
+const extractThesisData = async (req,res)=>{
+    console.log("smtg1");
+}
+
 const createThesis = async (req, res) => {
     try {
 
@@ -17,6 +25,7 @@ const createThesis = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
 
 const getAllThesis = async (req, res) => {
     try {
@@ -87,5 +96,8 @@ module.exports={
     getAllThesis,
     getThesisById,
     deleteThesis,
-    updateThesis
+    updateThesis,
+    uploadPdf,
+    extractThesisData
+    
 }

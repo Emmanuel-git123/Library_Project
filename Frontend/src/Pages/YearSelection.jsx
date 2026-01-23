@@ -10,10 +10,10 @@ const YearSelection = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const thesisRes = await fetch('http://localhost:8080/api/thesis')
+        const thesisRes = await fetch('http://localhost:8081/api/thesis')
         const thesisData = await thesisRes.json()
         
-        const deptRes = await fetch('http://localhost:8080/api/depts')
+        const deptRes = await fetch('http://localhost:8081/api/depts')
         const deptData = await deptRes.json()
         
         if (thesisRes.ok && deptRes.ok) {

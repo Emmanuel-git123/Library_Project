@@ -12,10 +12,10 @@ const ThesisDetail = () => {
     const fetchAll = async () => {
       try {
         const [thesisRes, usersRes, subjectsRes, deptsRes] = await Promise.all([
-          fetch('http://localhost:8080/api/thesis'),
-          fetch('http://localhost:8080/api/users'),
-          fetch('http://localhost:8080/api/subjects'),
-          fetch('http://localhost:8080/api/depts')
+          fetch('http://localhost:8081/api/thesis'),
+          fetch('http://localhost:8081/api/users'),
+          fetch('http://localhost:8081/api/subjects'),
+          fetch('http://localhost:8081/api/depts')
         ])
 
         const [thesisData, usersData, subjectsData, deptsData] = await Promise.all([

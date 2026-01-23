@@ -11,7 +11,7 @@ import Year from './Pages/Year'
 import Subject from './Pages/Subject'
 import SubjectDetail from './Pages/SubjectDetail'
 import Department from './Pages/Department'
-import DepartmentDetail from './Pages/DepartmentDetail'
+// import DepartmentDetail from './Pages/DepartmentDetail'
 import Authors from './Pages/Authors'
 import Supervisors from './Pages/Supervisors'
 import ThesisType from './Pages/ThesisType'
@@ -43,7 +43,6 @@ const App = () => {
         <Route path='/view/subject/:subjectId/theses' element={<ThesisListing/>}/>
         <Route path='/view/dept' element={<Department/>}/>
         <Route path='/view/dept/all' element={<ThesisListing/>}/>
-        <Route path='/view/dept/:category' element={<DepartmentDetail/>}/>
         <Route path='/view/dept/:id' element={<ThesisListing/>}/>
         <Route path='/view/dept/:deptId/years' element={<YearSelection/>}/>
         <Route path='/view/dept/:deptId/year/:year' element={<ThesisListing/>}/>

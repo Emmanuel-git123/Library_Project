@@ -10,7 +10,9 @@ const thesisSchema = new mongoose.Schema({
     degreeType: { type: String, enum: ['Btech', 'MA', 'MSc','MTech','MTech by Research','PhD'], required: true },
     pdfUrl: { type: String },
     keywords: [{ type: String }],
-    year:{type:Number,required:true}
+    year:{type:Number,required:true},
+    status:{type: String, enum: ['uploaded', 'extracting', 'awaiting_review', 'published'], default:'uploaded'},
+    allowDownload: {type: Boolean, default: false}
 }, { timestamps: true });
 
 const Thesis = mongoose.model("Thesis", thesisSchema);
