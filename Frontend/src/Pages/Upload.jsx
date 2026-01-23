@@ -239,7 +239,7 @@ const Upload = () => {
                             setAuthorEmail("");
                             setAuthorName("");
                         }} className='border px-2 py-1 rounded bg-amber-200 '>Cancel</button>
-                        <button onClick={handleNewAuthor} className='border px-2 py-1 rounded bg-amber-200 '>Submit</button>
+                        <button  className='border px-2 py-1 rounded bg-amber-200 '>Submit</button>
                     </div>
                 </div>
                 <div className='flex flex-col'>
