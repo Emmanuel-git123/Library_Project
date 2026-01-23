@@ -10,6 +10,7 @@ const Home = () => {
         <div className="px-10 py-3 flex justify-center">
             <img src={image} alt="library-picture" className="w-6xl object-cover"></img>
         </div>
+      <div className='flex flex-col items-center'>
         <div className='flex justify-center items-center font-bold text-gray-600 text-lg mb-2'>Welcome to ethesis</div>
         {/* <div className=' flex justify-center items-center gap-2'>
           <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>Atom</p></div>
@@ -123,6 +124,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   )
 }
