@@ -23,7 +23,7 @@ import Upload from './Pages/Upload'
 import { Toaster } from 'react-hot-toast'
 import ProtectedRoute from './Components/ProtectedRoute'
 import AdminInvite from './Pages/AdminInvite'
-
+import ExtractMetaData from './Pages/ExtractMetaData'
 
 const App = () => {
   return (
@@ -53,7 +53,8 @@ const App = () => {
         <Route path='/view/supervisor/:supervisorId/year/:year' element={<ThesisListing/>}/>
         <Route path='/view/thesis_type' element={<ThesisType/>}/>
         <Route path='/view/thesis_type/:id' element={<ThesisListing/>}/>
-        <Route path='/view/upload' element={<ProtectedRoute> <Upload/></ProtectedRoute>}/>
+        <Route path='/view/upload/submit' element={<ProtectedRoute> <Upload/></ProtectedRoute>}/>
+        <Route path='/view/upload' element={<ProtectedRoute> <ExtractMetaData/></ProtectedRoute>}/>
         <Route path='/admin/invite' element={<ProtectedRoute><AdminInvite/></ProtectedRoute>}/>
         <Route path='/thesis/:id' element={<ThesisDetail/>}/>
         <Route path='/*' element={<Not_found/>}/>

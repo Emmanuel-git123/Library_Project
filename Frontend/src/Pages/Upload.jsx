@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react'
 import { Field, Input, NativeSelect, Box  } from "@chakra-ui/react"
 
@@ -17,7 +17,7 @@ const Upload = () => {
     const [subjects, setSubjects] = useState([]);//all subjs data
     const [subj, setSubj] = useState("");//selected subjs id
     const [degree, setDegree] = useState("");
-    const [pdfurl, setPdfurl] = useState(null);
+    const [pdfFile, setPdfFile] = useState(null);
     const [keywords, setKeywords] = useState("");
     const [year, setYear] = useState("");
 
@@ -29,7 +29,14 @@ const Upload = () => {
 
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const location=useLocation();
 
+    useEffect(() => {
+        if (!location.state) {
+            toast.error("No extracted data found");
+            navigate("/view/upload");
+        }
+    }, []);
     useEffect(() => {
 
         const fetchDepts = async () => {
@@ -83,6 +90,18 @@ const Upload = () => {
         fetchSupervisor();
     }, [])
 
+    useEffect(() => {
+        if (location.state) {
+            const { extractedMeta, pdfFile } = location.state;
+            setTitle(extractedMeta?.title || "");
+            setAbstract(extractedMeta?.abstract || "");
+            setKeywords(Array.isArray(extractedMeta?.keywords)? extractedMeta.keywords.join(", "): "");
+            setYear(extractedMeta?.year || "");
+            setDegree(extractedMeta?.degreeType || "");
+            setPdfFile(pdfFile || null);
+        }
+    }, [location.state]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem("token");
@@ -94,7 +113,13 @@ const Upload = () => {
             return;
         }
 
-        const extractedYear = year ? Number(year.split("-")[0]) : "";
+        if (!pdfFile) {
+            setLoading(false);
+            toast.error("PDF file missing. Please re-upload.");
+            return;
+        }
+
+        const extractedYear = Number(year);
         const formData = new FormData();
         formData.append("title", title);
         formData.append("abstract", abstract);
@@ -103,12 +128,12 @@ const Upload = () => {
         formData.append("departmentId", dept);
         formData.append("subjectId", subj);
         formData.append("degreeType", degree);
-        formData.append("pdf", pdfurl);
+        formData.append("pdf", pdfFile);
         formData.append("keywords", JSON.stringify(keywords.split(",").map(k => k.trim())));
         formData.append("year", extractedYear);
 
         try {
-            const res = await fetch('http://localhost:8081/api/thesis', {
+            const res = await fetch('http://localhost:8081/api/thesis/create', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -227,7 +252,7 @@ const Upload = () => {
                     <Field.Label>Title:</Field.Label>
                     <Input value={title} onChange={(e) => setTitle(e.target.value)} type="text" className='border' />
                     <Field.Label>Abstract:</Field.Label>
-                    <Input value={abstract} onChange={(e) => setAbstract(e.target.value)} type="text" className='border' />
+                    <textarea value={abstract} onChange={(e) => setAbstract(e.target.value)} rows={6} className="border w-full"/>    
                     <Field.Label>Author:</Field.Label>
                     <NativeSelect.Root value={authorId} onChange={(e) => {
                         if (e.target.value == 'new') {
@@ -295,14 +320,15 @@ const Upload = () => {
                         </div>
 
                     </div>
-                    <label className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md cursor-pointer hover:bg-blue-700">Upload PDF
-                        <input type="file" accept="application/pdf" hidden onChange={(e) => setPdfurl(e.target.files[0])}/>
-                    </label>
-
+                    {pdfFile && (
+                        <p className="text-sm text-gray-600">
+                            Uploaded PDF: <strong>{pdfFile.name}</strong>
+                        </p>
+                    )}
                     <label>Keywords:</label>
-                    <input value={keywords} onChange={(e) => setKeywords(e.target.value)} type="text" className='border' />
+                    <input value={keywords} onChange={(e) => setKeywords(e.target.value)} type="text" className='border w-full' />
                     <label>Year:</label>
-                    <input value={year} onChange={(e) => setYear(e.target.value)} type="month" className='border' />
+                    <input value={year} onChange={(e) => setYear(e.target.value)} type="number" placeholder="Enter year" className="border"/>
                 </Field.Root>
             </div>
             <Button colorPalette="cyan" loading={loading} loadingText="Saving..." onClick={handleSubmit} className='bg-gray-200 my-4 text-gray-700 px-3 py-1 text-sm rounded border hover:bg-gray-300'>Submit</Button>

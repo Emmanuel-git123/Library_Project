@@ -184,25 +184,9 @@ const ThesisListing = () => {
               ))}
             </div>
           </div>
-          
-          {grouping === 'Creators' && (
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Jump to:</span>
-              <div className="flex gap-1">
-                {['B', 'D', 'G', 'K', 'M', 'N', 'P', 'R', 'S', 'T', 'V', 'Y'].map(letter => (
-                  <button
-                    key={letter}
-                    className="text-indigo-700 underline text-sm hover:text-indigo-900"
-                  >
-                    {letter}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
         
-        <p className="text-sm font-[400] mb-4">Number of items: {filterInfo.count}.</p>
+        <p className="text-sm mb-4">Number of items: {filterInfo.count}.</p>
 
         <GroupedThesisListing 
           theses={theses}
