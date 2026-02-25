@@ -22,7 +22,7 @@ app.use("/api/users",userRoutes);
 app.use("/api/auth",authRoutes);
 
 connectDB().then(() => {
-    app.listen(8081, () => {
-        console.log("LISTENING TO SERVER AT PORT 8081...")
+    app.listen(8080, () => {
+        console.log("LISTENING TO SERVER AT PORT 8080...")
     })
 })
