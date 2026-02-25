@@ -51,9 +51,14 @@ const ThesisDetail = () => {
     return u?.name || thesis?.supervisor || 'Unknown'
   }, [meta.users, thesis])
 
-const getPdfViewUrl = (url) => {
-  if (!url) return null;
-  return `https://docs.google.com/viewer?url=${encodeURIComponent(url)}`;
+const getPdfViewUrl = async() => {
+  const res = await fetch(`http://localhost:8081/api/thesis/pdf/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  });
+  const data = await res.json();
+  window.open(data.url, "_blank");
 };
 
   const subjectObj = useMemo(() => meta.subjects.find(s => s._id === thesis?.subjectId), [meta.subjects, thesis])
@@ -96,7 +101,7 @@ const getPdfViewUrl = (url) => {
               <div className="text-sm font-medium text-gray-800">PDF</div>
               <div className="text-xs text-gray-600">(External or sample link)</div>
             </div>
-            <Button isDisabled={!thesis.pdfUrl} onClick={()=>{window.open(`http://localhost:8081/api/thesis/pdf/${thesis._id}` , "_blank");}} className="bg-indigo-600 text-white px-3 py-1 text-sm rounded hover:bg-indigo-700">View</Button>
+            <Button isDisabled={!thesis.pdfUrl} onClick={()=>getPdfViewUrl()} className="bg-indigo-600 text-white px-3 py-1 text-sm rounded hover:bg-indigo-700">View</Button>
           </div>
         </div>
 

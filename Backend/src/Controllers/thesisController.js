@@ -4,6 +4,11 @@ const pdf = require('pdf-parse-new');
 const {uploadToCloud}=require('../../utils/uploadToCloud')
 const keyword_extractor = require("keyword-extractor");
 const axios = require('axios');
+const { uploadToS3 } = require("../../utils/s3");
+const { S3Client } = require("@aws-sdk/client-s3");
+const { GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+require('dotenv').config();
 
 const generateKeywordsFromAbstract = (abstract) => {
   const keywords = keyword_extractor.extract(abstract, {
@@ -101,7 +106,8 @@ const createThesis = async (req, res) => {
         if (!req.file) {
             return res.status(400).json({ message: "PDF file is required" });
         }
-        const cloudRes = await uploadToCloud(req.file.buffer);
+        // const cloudRes = await uploadToCloud(req.file.buffer);
+        const s3Key=await uploadToS3(req.file.buffer,req.file.originalname,req.file.mimetype);
         const data = {
             title: req.body.title,
             abstract: req.body.abstract,
@@ -112,7 +118,7 @@ const createThesis = async (req, res) => {
             degreeType: req.body.degreeType,
             year: Number(req.body.year),
             keywords: req.body.keywords ? JSON.parse(req.body.keywords) : [],
-            pdfUrl: cloudRes.secure_url
+            pdfUrl: s3Key
         };
 
         const new_thesis = new Thesis(data);
@@ -188,24 +194,29 @@ const updateThesis = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });    
     }
 };
-const viewPDF=async(req,res)=>{
+const getSignedURL=async(req,res)=>{
     try {
-        const thesis = await Thesis.findById(req.params.id);
-        if (!thesis){
-            return res.status(404).json({message:"Thesis not found"});
+        const thesis=await Thesis.findById(req.params.id);
+        if (!thesis) {
+            return res.status(404).json({ message: "Thesis not found" });
         }
-        console.log("PDF URL:", thesis.pdfUrl); 
-        const pdfUrl = thesis.pdfUrl;
-        const response =await axios.get(pdfUrl, { responseType: 'stream' });
-        console.log("Cloudinary response status:", response.status);
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'inline; filename="thesis.pdf"');
-
-        response.data.pipe(res);
+        const client=new S3Client({ region: process.env.AWS_REGION,
+            credentials: {
+                accessKeyId: process.env.AWS_ACCESS_KEY,
+                secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            },
+         });
+        const command = new GetObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: thesis.pdfUrl
+        });
+        const presigned=await getSignedUrl(client,command,{
+            expiresIn: 600
+        });
+        res.json({url:presigned});
     } catch (error) {
-         console.error("Full error:", error.message);
-        console.error("Error streaming PDF:", error);
-        res.status(500).send("Error streaming PDF");
+        console.error("Error in the getSignedURL:", error);
+        res.status(500).json({ message: "Internal Server Error" }); 
     }
 }
 
@@ -216,6 +227,5 @@ module.exports={
     deleteThesis,
     updateThesis,
     extractMetadata,
-    viewPDF
-    
+    getSignedURL
 }

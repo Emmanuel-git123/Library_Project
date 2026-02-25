@@ -32,11 +32,11 @@ const Upload = () => {
     const location=useLocation();
 
     useEffect(() => {
-        if (!location.state) {
+        if (!location.state?.extractedMeta || !location.state?.pdfFile) {
             toast.error("No extracted data found");
-            navigate("/view/upload");
+            navigate("/view/upload", { replace: true });
         }
-    }, []);
+    }, [location, navigate]);
     useEffect(() => {
 
         const fetchDepts = async () => {
@@ -169,7 +169,7 @@ const Upload = () => {
                     setSubjects(data.subjects);
                 }
                 else {
-                    toast.error(deptData.message || "Failed to fetch subjects");
+                    toast.error(data.message || "Failed to fetch subjects");
                 }
             } catch (error) {
                 console.error('Error fetching subjects:', error);
@@ -257,6 +257,7 @@ const Upload = () => {
                     <NativeSelect.Root value={authorId} onChange={(e) => {
                         if (e.target.value == 'new') {
                             setNewAuthor(true);
+                            setAuthorId("");
                         }
                         else {
                             setAuthorId(e.target.value);

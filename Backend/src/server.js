@@ -22,5 +22,8 @@ app.use("/api/auth",authRoutes);
 connectDB().then(() => {
     app.listen(8081, () => {
         console.log("LISTENING TO SERVER AT PORT 8081...")
+        console.log("REGION:", process.env.AWS_REGION);
+        console.log("ACCESS:", process.env.AWS_ACCESS_KEY);
+        console.log("SECRET:", process.env.AWS_SECRET_ACCESS_KEY);
     })
 })
