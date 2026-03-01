@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/extract',authMiddleware,upload.single('pdf'),extractMetadata );
 router.post('/create',authMiddleware,upload.single('pdf'), createThesis);
 
-router.get('/pdf/:id',authMiddleware,getSignedURL);
+router.get('/pdf/:id',getSignedURL);
 router.get('/', getAllThesis);
 router.get('/:id', getThesisById);
 

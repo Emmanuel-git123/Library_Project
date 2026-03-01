@@ -1,38 +1,74 @@
-import { useState } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import { Document, Page, pdfjs } from "react-pdf";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+import worker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
-const PDFViewer = ({ thesisId, pdfTitle }) => {
+pdfjs.GlobalWorkerOptions.workerSrc = worker;
+
+const PDFViewer = () => {
+  const { id } = useParams();
+  const [url, setUrl] = useState(null);
+
   const [numPages, setNumPages] = useState(null);
+  const [pageNumber,setPageNumber]=useState(0);
+  
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+//   const [workerError, setWorkerError] = useState(false);
 
-  const onDocumentLoadSuccess = ({ numPages }) => setNumPages(numPages);
+  const onDocumentSuccess=({numPages})=>{
+    setNumPages(numPages);
+    setPageNumber(1);
+  };
+
+
+  useEffect(() => {
+    const fetchSignedUrl = async () => {
+      try {
+        
+        const token = localStorage.getItem("token");
+        
+        if (!token) {
+          throw new Error("No authentication token found");
+        }
+
+        const res = await fetch(
+          `http://localhost:8081/api/thesis/pdf/${id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error(`Failed to fetch PDF: ${res.statusText}`);
+        }
+
+        const data = await res.json();
+        
+        if (!data.url) {
+          throw new Error("No URL returned from server");
+        }
+
+        setUrl(data.url);
+      } catch (err) {
+        console.error("Error fetching PDF:", err);
+        setError(err.message);
+      } 
+
+    };
+
+    if (id) {
+      fetchSignedUrl();
+    }
+  }, [id]);
+
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto my-8 border rounded-lg shadow-lg overflow-hidden bg-white">
-      
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <span className="text-6xl font-bold text-gray-300 opacity-20 rotate-12 select-none text-center wrap-break-word">
-          {pdfTitle || 'Untitled'}
-        </span>
-      </div>
-
-      <div className="relative z-10 p-4 overflow-auto h-[80vh]">
-        <Document
-          file={`/api/thesis/pdf/${thesisId}`}
-          onLoadSuccess={onDocumentLoadSuccess}
-          options={{ workerSrc: "/pdf.worker.js" }}
-        >
-          {Array.from(new Array(numPages), (_, index) => (
-            <Page
-              key={`page_${index + 1}`}
-              pageNumber={index + 1}
-              className="mb-4 shadow-md rounded"
-            />
-          ))}
+    <div>
+        <Document file={url} onLoadSuccess={onDocumentSuccess}>
+            <Page height={600} pageNumber={pageNumber}/>
         </Document>
-      </div>
     </div>
   );
 };

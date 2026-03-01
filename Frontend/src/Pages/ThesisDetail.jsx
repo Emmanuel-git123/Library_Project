@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { FileText } from 'lucide-react';
 import {Button} from '@chakra-ui/react'
+import toast from 'react-hot-toast';
+import { Document } from 'react-pdf';
 
 const ThesisDetail = () => {
   const { id } = useParams()
@@ -52,13 +54,13 @@ const ThesisDetail = () => {
   }, [meta.users, thesis])
 
 const getPdfViewUrl = async() => {
-  const res = await fetch(`http://localhost:8081/api/thesis/pdf/${id}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  });
-  const data = await res.json();
-  window.open(data.url, "_blank");
+  const token=localStorage.getItem("token");
+  if(!token){
+    toast.error("User is not logged in");
+    return;
+  }
+  const data=await fetch(`http://localhost:8081/api/thesis/pdf/${id}`)
+  window.open(`${data.url}`, "_blank");
 };
 
   const subjectObj = useMemo(() => meta.subjects.find(s => s._id === thesis?.subjectId), [meta.subjects, thesis])
