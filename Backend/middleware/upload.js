@@ -1,12 +1,17 @@
-const multer = require("multer");
+const multer=require('multer');
 
-const storage = multer.diskStorage({
-  destination: "uploads/",
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  }
+const storage=multer.memoryStorage();
+
+const upload=multer({storage,
+  limits:{
+    fileSize:30*1024*1024
+  },
+  fileFilter:(req,file,cb)=>{
+    if(file.mimetype!="application/pdf"){
+      return cb(new Error("Only PDFs are allowed"));
+    }
+    cb(null, true);
+  },
 });
 
-const upload = multer({ storage });
-
-module.exports = upload;
+module.exports=upload;

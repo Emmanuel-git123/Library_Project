@@ -8,7 +8,7 @@ const ThesisType = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const thesisRes = await fetch('http://localhost:8080/api/thesis')
+        const thesisRes = await fetch('http://localhost:8081/api/thesis')
         const thesisData = await thesisRes.json()
         
         if (thesisRes.ok) {

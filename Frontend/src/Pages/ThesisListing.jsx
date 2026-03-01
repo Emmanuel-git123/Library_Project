@@ -15,8 +15,8 @@ const ThesisListing = () => {
     const fetchTheses = async () => {
       try {
         const [thesisRes, usersRes] = await Promise.all([
-          fetch('http://localhost:8080/api/thesis'),
-          fetch('http://localhost:8080/api/users')
+          fetch('http://localhost:8081/api/thesis'),
+          fetch('http://localhost:8081/api/users')
         ])
         
         const [thesisData, usersData] = await Promise.all([
@@ -52,7 +52,7 @@ const ThesisListing = () => {
           
           if (filterType === 'subject' && subjectId) {
             filteredTheses = thesisData.required_thesis.filter(thesis => thesis.subjectId === subjectId)
-            const subjectRes = await fetch('http://localhost:8080/api/subjects')
+            const subjectRes = await fetch('http://localhost:8081/api/subjects')
             const subjectData = await subjectRes.json()
             if (subjectRes.ok) {
               const subject = subjectData.subjects.find(s => s._id === subjectId)
@@ -60,7 +60,7 @@ const ThesisListing = () => {
             }
           } else if (filterType === 'dept' && id) {
             filteredTheses = thesisData.required_thesis.filter(thesis => thesis.departmentId === id)
-            const deptRes = await fetch('http://localhost:8080/api/depts')
+            const deptRes = await fetch('http://localhost:8081/api/depts')
             const deptData = await deptRes.json()
             if (deptRes.ok) {
               const dept = deptData.departments.find(d => d._id === id)
@@ -73,7 +73,7 @@ const ThesisListing = () => {
             filteredTheses = thesisData.required_thesis.filter(thesis => 
               thesis.departmentId === deptId && thesis.year === parseInt(year)
             )
-            const deptRes = await fetch('http://localhost:8080/api/depts')
+            const deptRes = await fetch('http://localhost:8081/api/depts')
             const deptData = await deptRes.json()
             if (deptRes.ok) {
               const dept = deptData.departments.find(d => d._id === deptId)
@@ -81,7 +81,7 @@ const ThesisListing = () => {
             }
           } else if (filterType === 'author' && id) {
             filteredTheses = thesisData.required_thesis.filter(thesis => thesis.author === id)
-            const userRes = await fetch('http://localhost:8080/api/users')
+            const userRes = await fetch('http://localhost:8081/api/users')
             const userData = await userRes.json()
             if (userRes.ok) {
               const user = userData.users.find(u => u._id === id)
@@ -93,7 +93,7 @@ const ThesisListing = () => {
               filteredTheses = thesisData.required_thesis.filter(thesis => 
                 thesis.supervisor === supervisor && thesis.year === parseInt(year)
               )
-              const userRes = await fetch('http://localhost:8080/api/users')
+              const userRes = await fetch('http://localhost:8081/api/users')
               const userData = await userRes.json()
               if (userRes.ok) {
                 const user = userData.users.find(u => u._id === supervisor)
@@ -101,7 +101,7 @@ const ThesisListing = () => {
               }
             } else {
               filteredTheses = thesisData.required_thesis.filter(thesis => thesis.supervisor === supervisor)
-              const userRes = await fetch('http://localhost:8080/api/users')
+              const userRes = await fetch('http://localhost:8081/api/users')
               const userData = await userRes.json()
               if (userRes.ok) {
                 const user = userData.users.find(u => u._id === supervisor)
@@ -129,7 +129,7 @@ const ThesisListing = () => {
 
   const getAuthorName = async (authorId) => {
     try {
-      const res = await fetch('http://localhost:8080/api/users')
+      const res = await fetch('http://localhost:8081/api/users')
       const data = await res.json()
       if (res.ok) {
         const user = data.users.find(u => u._id === authorId)
@@ -162,21 +162,6 @@ const ThesisListing = () => {
             >
               <span className="text-xs">▲</span> Up a level
             </button>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Export as</span>
-              <select className="text-sm border border-gray-300 rounded px-2 py-1">
-                <option>ASCII Citation</option>
-              </select>
-              <button className="bg-indigo-600 text-white px-3 py-1 text-sm rounded hover:bg-indigo-700">
-                Export
-              </button>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>RSS 2.0</p></div>
-            <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>RSS 1.0</p></div>
-            <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>Atom</p></div>
           </div>
         </div>
 
@@ -199,25 +184,9 @@ const ThesisListing = () => {
               ))}
             </div>
           </div>
-          
-          {grouping === 'Creators' && (
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Jump to:</span>
-              <div className="flex gap-1">
-                {['B', 'D', 'G', 'K', 'M', 'N', 'P', 'R', 'S', 'T', 'V', 'Y'].map(letter => (
-                  <button
-                    key={letter}
-                    className="text-indigo-700 underline text-sm hover:text-indigo-900"
-                  >
-                    {letter}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
         
-        <p className="text-sm font-[400] mb-4">Number of items: {filterInfo.count}.</p>
+        <p className="text-sm mb-4">Number of items: {filterInfo.count}.</p>
 
         <GroupedThesisListing 
           theses={theses}
