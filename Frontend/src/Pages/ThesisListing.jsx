@@ -162,21 +162,6 @@ const ThesisListing = () => {
             >
               <span className="text-xs">▲</span> Up a level
             </button>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Export as</span>
-              <select className="text-sm border border-gray-300 rounded px-2 py-1">
-                <option>ASCII Citation</option>
-              </select>
-              <button className="bg-indigo-600 text-white px-3 py-1 text-sm rounded hover:bg-indigo-700">
-                Export
-              </button>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>RSS 2.0</p></div>
-            <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>RSS 1.0</p></div>
-            <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>Atom</p></div>
           </div>
         </div>
 
@@ -199,25 +184,9 @@ const ThesisListing = () => {
               ))}
             </div>
           </div>
-          
-          {grouping === 'Creators' && (
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Jump to:</span>
-              <div className="flex gap-1">
-                {['B', 'D', 'G', 'K', 'M', 'N', 'P', 'R', 'S', 'T', 'V', 'Y'].map(letter => (
-                  <button
-                    key={letter}
-                    className="text-indigo-700 underline text-sm hover:text-indigo-900"
-                  >
-                    {letter}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
         
-        <p className="text-sm font-[400] mb-4">Number of items: {filterInfo.count}.</p>
+        <p className="text-sm mb-4">Number of items: {filterInfo.count}.</p>
 
         <GroupedThesisListing 
           theses={theses}

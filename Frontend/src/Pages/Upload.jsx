@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate,useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react'
 import { Field, Input, NativeSelect, Box } from "@chakra-ui/react"
 import Newlist from "../Components/Newlist"
@@ -18,7 +18,7 @@ const Upload = () => {
     const [subjects, setSubjects] = useState([]);//all subjs data
     const [subj, setSubj] = useState("");//selected subjs id
     const [degree, setDegree] = useState("");
-    const [pdfurl, setPdfurl] = useState(null);
+    const [pdfFile, setPdfFile] = useState(null);
     const [keywords, setKeywords] = useState("");
     const [year, setYear] = useState("");
 
@@ -29,10 +29,17 @@ const Upload = () => {
     const [authorDegree, setAuthorDegree] = useState("");
 
     const [loading, setLoading] = useState(false);
-
     const navigate = useNavigate();
+    const location=useLocation();
 
     useEffect(() => {
+        if (!location.state?.extractedMeta || !location.state?.pdfFile) {
+            toast.error("No extracted data found");
+            navigate("/view/upload", { replace: true });
+        }
+    }, [location, navigate]);
+    useEffect(() => {
+
         const fetchDepts = async () => {
             try {
                 const res = await fetch("http://localhost:8081/api/depts")
@@ -82,17 +89,38 @@ const Upload = () => {
         fetchDepts();
         fetchAuthor();
         fetchSupervisor();
-        setPdfurl("abs.pdf")
     }, [])
+
+    useEffect(() => {
+        if (location.state) {
+            const { extractedMeta, pdfFile } = location.state;
+            setTitle(extractedMeta?.title || "");
+            setAbstract(extractedMeta?.abstract || "");
+            setKeywords(Array.isArray(extractedMeta?.keywords)? extractedMeta.keywords.join(", "): "");
+            setYear(extractedMeta?.year || "");
+            setDegree(extractedMeta?.degreeType || "");
+            setPdfFile(pdfFile || null);
+        }
+    }, [location.state]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem("token");
+        setLoading(true);
+
         if (!authorId || !supervisorId || !dept || !degree) {
+            setLoading(false);
             toast.error("Please fill all required fields");
             return;
         }
 
-        const extractedYear = year ? Number(year.split("-")[0]) : "";
+        if (!pdfFile) {
+            setLoading(false);
+            toast.error("PDF file missing. Please re-upload.");
+            return;
+        }
+
+        const extractedYear = Number(year);
         const formData = new FormData();
         formData.append("title", title);
         formData.append("abstract", abstract);
@@ -101,12 +129,12 @@ const Upload = () => {
         formData.append("departmentId", dept);
         formData.append("subjectId", subj);
         formData.append("degreeType", degree);
-        formData.append("pdf", pdfurl);
+        formData.append("pdf", pdfFile);
         formData.append("keywords", JSON.stringify(keywords.split(",").map(k => k.trim())));
         formData.append("year", extractedYear);
 
         try {
-            const res = await fetch('http://localhost:8081/api/thesis', {
+            const res = await fetch('http://localhost:8081/api/thesis/create', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -122,10 +150,12 @@ const Upload = () => {
             else {
                 const data = await res.json();
                 toast.error(data.message || 'Failed to create thesis');
+                setLoading(false);
             }
         } catch (error) {
             console.error(error);
             toast.error('Server error');
+            setLoading(false);
         }
     }
 
@@ -140,7 +170,7 @@ const Upload = () => {
                     setSubjects(data.subjects);
                 }
                 else {
-                    toast.error(deptData.message || "Failed to fetch subjects");
+                    toast.error(data.message || "Failed to fetch subjects");
                 }
             } catch (error) {
                 console.error('Error fetching subjects:', error);
@@ -149,6 +179,7 @@ const Upload = () => {
         }
         fetchSubjects();
     }
+
     const handleNewAuthor = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem("token");
@@ -178,9 +209,8 @@ const Upload = () => {
             toast.error('Error creating author');
         }
     }
-
     return (
-        <Box maxW="3xl" mx="auto" className='py-4 px-8 border-4 rounded-2xl shadow-2xs'>
+        <Box maxW="3xl" mx="auto" className='py-4 px-8 border'>
             {newAuthor && <div className=' flex flex-col  gap-2 w-lg '>
                 <div className='flex flex-col border p-3 w-lg gap-1'>
                     <label>Name:</label>
@@ -192,7 +222,7 @@ const Upload = () => {
                         <option value="">Select Department</option>
                         {departments.map((d) => (
                             <option key={d._id} value={d._id}>
-                                {d.name} ({d.category})
+                                {d.name}
                             </option>
                         ))}
                     </select>
@@ -223,11 +253,12 @@ const Upload = () => {
                     <Field.Label>Title:</Field.Label>
                     <Input value={title} onChange={(e) => setTitle(e.target.value)} type="text" className='border' />
                     <Field.Label>Abstract:</Field.Label>
-                    <Input value={abstract} onChange={(e) => setAbstract(e.target.value)} type="text" className='border' />
+                    <textarea value={abstract} onChange={(e) => setAbstract(e.target.value)} rows={6} className="border w-full"/>    
                     <Field.Label>Author:</Field.Label>
                     <NativeSelect.Root value={authorId} onChange={(e) => {
                         if (e.target.value == 'new') {
                             setNewAuthor(true);
+                            setAuthorId("");
                         }
                         else {
                             setAuthorId(e.target.value);
@@ -261,14 +292,14 @@ const Upload = () => {
                     <Field.Label>Department:</Field.Label>
                     <NativeSelect.Root value={dept} onChange={handleDeptChange} className="border">
                         <NativeSelect.Field>
-                            <option value="">Select Department</option>
-                            {departments.map((d) => (
-                                <option key={d._id} value={d._id}>
-                                    {d.name} ({d.category})
-                                </option>
-                            ))}
+                        <option value="">Select Department</option>
+                        {departments.map((d) => (
+                            <option key={d._id} value={d._id}>
+                                {d.name} 
+                            </option>
+                        ))}
                         </NativeSelect.Field>
-                        <NativeSelect.Indicator />
+                        <NativeSelect.Indicator/>
                     </NativeSelect.Root>
                     <label>Subject:</label>
                     <select value={subj} onChange={(e) => setSubj(e.target.value)} className="border">
@@ -291,22 +322,19 @@ const Upload = () => {
                         </div>
 
                     </div>
-                        {pdfurl && (
+                    {pdfFile && (
                         <p className="text-sm text-gray-600">
-                            Uploaded PDF: <strong>{pdfurl}</strong>
+                            Uploaded PDF: <strong>{pdfFile.name}</strong>
                         </p>
                     )}
-
                     <label>Keywords:</label>
-                    <input value={keywords} onChange={(e) => setKeywords(e.target.value)} type="text" className='border' />
+                    <input value={keywords} onChange={(e) => setKeywords(e.target.value)} type="text" className='border w-full' />
                     <label>Year:</label>
-                    <input value={year} onChange={(e) => setYear(e.target.value)} type="month" className='border' />
+                    <input value={year} onChange={(e) => setYear(e.target.value)} type="number" placeholder="Enter year" className="border"/>
                 </Field.Root>
             </div>
             <Button colorPalette="cyan" loading={loading} loadingText="Saving..." onClick={handleSubmit} className='bg-gray-200 my-4 text-gray-700 px-3 py-1 text-sm rounded border hover:bg-gray-300'>Submit</Button>
-            <Newlist />
         </Box>
-
     )
 }
 

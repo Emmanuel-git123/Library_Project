@@ -11,7 +11,7 @@ import Year from './Pages/Year'
 import Subject from './Pages/Subject'
 import SubjectDetail from './Pages/SubjectDetail'
 import Department from './Pages/Department'
-import DepartmentDetail from './Pages/DepartmentDetail'
+// import DepartmentDetail from './Pages/DepartmentDetail'
 import Authors from './Pages/Authors'
 import Supervisors from './Pages/Supervisors'
 import ThesisType from './Pages/ThesisType'
@@ -23,7 +23,8 @@ import Upload from './Pages/Upload'
 import { Toaster } from 'react-hot-toast'
 import ProtectedRoute from './Components/ProtectedRoute'
 import AdminInvite from './Pages/AdminInvite'
-
+import ExtractMetaData from './Pages/ExtractMetaData'
+import PDFViewer from './Components/PDFViewer'
 
 const App = () => {
   return (
@@ -43,7 +44,6 @@ const App = () => {
         <Route path='/view/subject/:subjectId/theses' element={<ThesisListing/>}/>
         <Route path='/view/dept' element={<Department/>}/>
         <Route path='/view/dept/all' element={<ThesisListing/>}/>
-        <Route path='/view/dept/:category' element={<DepartmentDetail/>}/>
         <Route path='/view/dept/:id' element={<ThesisListing/>}/>
         <Route path='/view/dept/:deptId/years' element={<YearSelection/>}/>
         <Route path='/view/dept/:deptId/year/:year' element={<ThesisListing/>}/>
@@ -54,7 +54,9 @@ const App = () => {
         <Route path='/view/supervisor/:supervisorId/year/:year' element={<ThesisListing/>}/>
         <Route path='/view/thesis_type' element={<ThesisType/>}/>
         <Route path='/view/thesis_type/:id' element={<ThesisListing/>}/>
-        <Route path='/view/upload' element={<ProtectedRoute> <Upload/></ProtectedRoute>}/>
+        <Route path='/view/upload/submit' element={<ProtectedRoute> <Upload/></ProtectedRoute>}/>
+        <Route path='/view/pdf/:id' element={<ProtectedRoute><PDFViewer/></ProtectedRoute>}/>
+        <Route path='/view/upload' element={<ProtectedRoute> <ExtractMetaData/></ProtectedRoute>}/>
         <Route path='/admin/invite' element={<ProtectedRoute><AdminInvite/></ProtectedRoute>}/>
         <Route path='/thesis/:id' element={<ThesisDetail/>}/>
         <Route path='/*' element={<Not_found/>}/>

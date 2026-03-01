@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { FileText } from 'lucide-react';
+import {Button} from '@chakra-ui/react'
+import toast from 'react-hot-toast';
+import { Document } from 'react-pdf';
 
 const ThesisDetail = () => {
   const { id } = useParams()
@@ -50,6 +53,16 @@ const ThesisDetail = () => {
     return u?.name || thesis?.supervisor || 'Unknown'
   }, [meta.users, thesis])
 
+const getPdfViewUrl = async() => {
+  const token=localStorage.getItem("token");
+  if(!token){
+    toast.error("User is not logged in");
+    return;
+  }
+  const data=await fetch(`http://localhost:8081/api/thesis/pdf/${id}`)
+  window.open(`${data.url}`, "_blank");
+};
+
   const subjectObj = useMemo(() => meta.subjects.find(s => s._id === thesis?.subjectId), [meta.subjects, thesis])
   const deptObj = useMemo(() => meta.departments.find(d => d._id === thesis?.departmentId), [meta.departments, thesis])
 
@@ -90,14 +103,7 @@ const ThesisDetail = () => {
               <div className="text-sm font-medium text-gray-800">PDF</div>
               <div className="text-xs text-gray-600">(External or sample link)</div>
             </div>
-            <a 
-              href={thesis.pdfUrl} 
-              target="_blank" 
-              rel="noreferrer" 
-              className="bg-indigo-600 text-white px-3 py-1 text-sm rounded hover:bg-indigo-700"
-            >
-              Download
-            </a>
+            <Button isDisabled={!thesis.pdfUrl} onClick={()=>getPdfViewUrl()} className="bg-indigo-600 text-white px-3 py-1 text-sm rounded hover:bg-indigo-700">View</Button>
           </div>
         </div>
 
