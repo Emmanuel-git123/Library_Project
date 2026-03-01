@@ -11,10 +11,10 @@ const SubjectDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const subjectsRes = await fetch('http://localhost:8080/api/subjects')
+        const subjectsRes = await fetch('http://localhost:8081/api/subjects')
         const subjectsData = await subjectsRes.json()
         
-        const thesisRes = await fetch('http://localhost:8080/api/thesis')
+        const thesisRes = await fetch('http://localhost:8081/api/thesis')
         const thesisData = await thesisRes.json()
         
         if (subjectsRes.ok && thesisRes.ok) {
