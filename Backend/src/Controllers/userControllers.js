@@ -11,7 +11,7 @@ const createUser = async (req, res) => {
     } catch (error) {
         console.error("Error creating user:", error);
         if (error.code === 11000) {
-            return res.status(400).json({ message: "Email already exists" });
+            return res.status(400).json({ message: "Duplicate field value" });
         }
         res.status(500).json({ message: "Internal Server Error" });
     }
