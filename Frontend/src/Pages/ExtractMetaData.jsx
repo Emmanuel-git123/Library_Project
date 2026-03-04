@@ -8,10 +8,13 @@ import { useNavigate } from 'react-router-dom'
 
 const ExtractMetaData = () => {
   const [file,setFile]=useState(null);
+  const [loading,setLoading]=useState(false);
   const navigate=useNavigate();
   const handleClick= async ()=>{
+    setLoading(true);
     if (!file) {
       toast.error("Please upload a file first");
+      setLoading(false);
       return;
     }
     const formData=new FormData();
@@ -29,10 +32,12 @@ const ExtractMetaData = () => {
       // console.log(data.text);
       if(!res.ok){
         toast.error("Extraction Failed!");
+        setLoading(false);
         return;
       }
       else{
         toast.success("Metadata extracted!");
+        setLoading(true);
         navigate("/view/upload/submit", {
           state: {
             extractedMeta: data,
@@ -42,6 +47,7 @@ const ExtractMetaData = () => {
       }
     } catch (err) {
       console.error(err);
+      setLoading(false);
       toast.error("Failed to extract metadata");
     }
   }
@@ -61,7 +67,7 @@ const ExtractMetaData = () => {
         <FileUpload.List />
       </FileUpload.Root>
       <ButtonGroup size="sm" className='mb-8' variant="outline">
-      <Button disabled={!file} onClick={handleClick} colorPalette="blue">Save</Button>
+      {!loading?(<Button disabled={!file} onClick={handleClick} colorPalette="blue">Save</Button>):(<Button disabled className='transition-all' colorPalette="green">Saving...</Button>)}
       <Button onClick={()=>window.location.reload()}>Cancel</Button>
     </ButtonGroup>
     </div>

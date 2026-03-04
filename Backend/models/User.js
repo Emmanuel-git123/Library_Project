@@ -5,7 +5,9 @@ const userSchema = new mongoose.Schema({
     email: { type: String },
     role: { type: String, enum: ['Author', 'Supervisor'], default: 'Author', required: true },
     departmentId:{type:mongoose.Schema.Types.ObjectId,ref:"Department",required:true},
-    degreeType:{ type: String, enum: ['Btech', 'MA', 'MSc','MTech','MTech by Research','PhD'], default: 'Btech', required: true },
+    degreeType:{ type: String, enum: ['Btech', 'MA', 'MSc','MTech','MTech by Research','PhD'],required: function () {
+            return this.role === "Author";
+        }, default: 'Btech' },
     thesis:[{type:mongoose.Schema.Types.ObjectId,ref:"Thesis"}],
     yearOfEnrollment: { type: Number },
     

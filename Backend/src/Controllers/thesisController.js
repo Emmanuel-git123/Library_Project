@@ -10,6 +10,12 @@ const { GetObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 require('dotenv').config();
 
+const cleanText = (text) => {
+  return text.replace(/^\s*(i|ii|iii|iv|v|vi|vii|viii|ix|x)\s*$/gim, "")
+    .replace(/^\s*\d+\s*$/gim, "")
+    .replace(/\n{3,}/g, "\n\n");
+};
+
 const generateKeywordsFromAbstract = (abstract) => {
   const keywords = keyword_extractor.extract(abstract, {
     language: "english",
@@ -22,13 +28,18 @@ const generateKeywordsFromAbstract = (abstract) => {
 };
 
 const extractAbstract = (text) => {
-  const match = text.match(
-    /ABSTRACT\s*([\s\S]*?)(?:Keywords\s*:|CHAPTER\s+1|INTRODUCTION|\n\s*\n|$)/i
+  const cleaned = cleanText(text);
+
+  const match = cleaned.match(
+    /ABSTRACT\s*([\s\S]*?)(?=\bACKNOWLEDGEMENTS\b|\bKEYWORDS\b|\bKeywords\s*:)/i
   );
 
   if (!match) return null;
 
-  return match[1].trim();
+  return match[1]
+    .replace(/\n+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 };
 
 const extractTitle = (text) => {
@@ -123,6 +134,16 @@ const createThesis = async (req, res) => {
 
         const new_thesis = new Thesis(data);
         await new_thesis.save();
+
+        await User.findByIdAndUpdate(
+            req.body.author,
+            { $push: { thesis: new_thesis._id } }
+        );
+
+        await User.findByIdAndUpdate(
+            req.body.supervisor,
+            { $push: { thesis: new_thesis._id } }
+        );
         res.status(201).json({ message: "Thesis successfully created", thesis: new_thesis });
     } catch (error) {
         console.error("Error in the createThesis function:", error);
@@ -155,7 +176,13 @@ const getAllThesis = async (req, res) => {
             filters.degreeType = degreeType;
         }
 
-        const required_thesis = await Thesis.find(filters);
+        const required_thesis = await Thesis.find(filters)
+            .populate("author", "name ")
+            .populate("supervisor", "name")
+            .populate("departmentId", "name")
+            .populate("subjectId", "name")
+            .lean();
+
         res.status(200).json({count: required_thesis.length, required_thesis });
     } catch (error) {
         console.error("Error in the getAllThesis function:", error);
@@ -165,7 +192,13 @@ const getAllThesis = async (req, res) => {
 
 const getThesisById = async (req, res) => {
     try {
-        const thesis = await Thesis.findById(req.params.id);
+        const thesis = await Thesis.findById(req.params.id)
+            .populate("author", "name email")
+            .populate("supervisor", "name")
+            .populate("departmentId", "name")
+            .populate("subjectId", "name")
+            .lean();
+
         if (!thesis) {
             return res.status(404).json({ message: "Thesis Not found" });
         }
@@ -196,6 +229,7 @@ const updateThesis = async (req, res) => {
 };
 const getSignedURL=async(req,res)=>{
     try {
+        // console.log("PARAM ID:", req.params.id);
         const thesis=await Thesis.findById(req.params.id);
         if (!thesis) {
             return res.status(404).json({ message: "Thesis not found" });

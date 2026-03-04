@@ -29,8 +29,8 @@ const Subject = () => {
 
           const directCounts = {}
           thesesFetched.forEach(thesis => {
-            if (thesis.subjectId) {
-              directCounts[thesis.subjectId] = (directCounts[thesis.subjectId] || 0) + 1
+            if (thesis.subjectId._id) {
+              directCounts[thesis.subjectId._id] = (directCounts[thesis.subjectId._id] || 0) + 1
             }
           })
 
@@ -95,7 +95,7 @@ const Subject = () => {
         <h2 className="font-semibold text-lg text-gray-600 mb-2 text-center">
           Browse by Subject and Year
         </h2>
-        <p className="text-sm font-[400] mb-2">
+        <p className="text-sm mb-2">
           Please select a value to browse from the list below.
         </p>
 
