@@ -71,7 +71,7 @@ const Authors = () => {
   }, [search]);
 
   return (
-    <div className="flex justify-center bg-[#EEEEEE]">
+    <div className="flex justify-center bg-gray-100 min-h-full">
       <div className="flex flex-col w-2xl">
         <h2 className="font-bold text-3xl text-gray-700 mt-4 mb-1 text-center">Browse by Authors</h2>
         <p className="text-xs mb-3 text-center">Please select a value to browse from the list below.</p>
@@ -83,7 +83,7 @@ const Authors = () => {
 
         <div className="grid grid-cols-4 gap-4 text-sm text-center font-bold leading-6">
           {currentAuthors.map((author) => (
-              <div key={author._id} className="p-4 rounded-3xl shadow-lg bg-blue-400 text-black">
+              <div key={author._id} className="p-4 rounded-3xl shadow-lg bg-white border border-gray-200 text-gray-800 hover:bg-blue-50">
                   <Link to={`/view/author/${author._id}`} className="no-underline">
                   {author.name} ({getAuthorCount(author._id)})
                   </Link>
@@ -98,10 +98,10 @@ const Authors = () => {
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`px-3 py-1 rounded-md text-sm font-medium transition
+                className={`px-3 py-1 rounded-md text-sm font-medium transition mb-5
                   ${
                     currentPage === page
-                      ? "bg-blue-600 text-white"
+                      ? "bg-blue-500 text-white hover:bg-blue-600"
                       : "bg-gray-300 text-black hover:bg-gray-400"
                   }`}
               >
