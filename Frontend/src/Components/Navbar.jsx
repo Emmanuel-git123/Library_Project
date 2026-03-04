@@ -40,13 +40,14 @@ const Navbar = () => {
                     <Link to="/view/author" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Authors</Link>
                     <Link to="/view/supervisor" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Supervisors</Link>
                     <Link to="/view/thesis_type" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Thesis Type</Link>
-                    {token&&<Link to='/view/upload' className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center'>Upload Thesis</Link>}                </div>
+                    {token&&<Link to='/view/upload' className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center'>Upload Thesis</Link>}                
+                </div>
                 <div className='border border-white px-3 flex justify-between bg-gray-300 py-0.5'>
                     <div className='flex gap-1 items-center'>
                         {token?
                         <Link to="/" onClick={handleLogOut} className='underline text-indigo-700 text-sm hover:text-red-500'>Log out</Link>
                         // :<Link to="/login" className='underline text-indigo-700 text-sm hover:text-red-500'>Login</Link>}\
-                        :<Link to="/login" className='group relative overflow-hidden animate-pulse text-sm w-36 bg-gray-800 h-6 text-center border-0 rounded-2xl text-white opacity-500 hover:bg-gray-900 focus:outline-4 focus-outline-offset-2 focus:outline-black'>
+                        :<Link to="/login" className='group relative overflow-hidden text-sm w-36 bg-gray-800 h-6 text-center border-0 rounded-2xl text-white opacity-500 hover:bg-gray-900 focus:outline-4 focus-outline-offset-2 focus:outline-black'>
                             <span className='absolute inset-0 bg-white opacity-30 scale-0 group-hover:scale-200 transition-transform duration-1000 rounded-2xl w-36'></span>
                             <span className='relative z-10'>Login</span>
                         </Link>}
