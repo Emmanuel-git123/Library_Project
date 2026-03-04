@@ -29,7 +29,10 @@ const SubjectDetail = () => {
           
           const counts = {}
           theses.forEach(thesis => {
-            counts[thesis.subjectId] = (counts[thesis.subjectId] || 0) + 1
+            if (thesis.subjectId && thesis.subjectId._id) {
+              const sid = thesis.subjectId._id
+              counts[sid] = (counts[sid] || 0) + 1
+            }
           })
           setThesisCounts(counts)
         }
@@ -42,9 +45,17 @@ const SubjectDetail = () => {
     fetchData()
   }, [subjectId])
 
-  const getSubjectCount = (subjectId) => {
-    return thesisCounts[subjectId] || 0
+  const getSubjectCount = (id) => {
+  let total = thesisCounts[id] || 0
+
+  if (id === subjectId) {
+    subSubjects.forEach(sub => {
+      total += thesisCounts[sub._id] || 0
+    })
   }
+
+  return total
+}
 
   if (loading) {
     return (
@@ -90,7 +101,7 @@ const SubjectDetail = () => {
             {subSubjects.map(subSubject => (
               <li key={subSubject._id} className="ml-6 list-disc list-inside text-sm">
                 <Link 
-                  to={`/view/subject/${subSubject._id}`} 
+                  to={`/view/subject/${subSubject._id}/theses`} 
                   className="text-indigo-700 underline"
                 >
                   {subSubject.name} ({getSubjectCount(subSubject._id)})

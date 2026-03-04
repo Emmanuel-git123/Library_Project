@@ -11,6 +11,7 @@ const Year = () => {
             try {
                 const response = await fetch(`http://localhost:8081/api/thesis`);
                 const data = await response.json();
+                console.log(data);
                 if (response.ok) {
                     const yearCount = {}; 
                     data.required_thesis.forEach(t => { yearCount[t.year] = (yearCount[t.year] || 0) + 1; });
@@ -30,7 +31,7 @@ const Year = () => {
     );
 
     return (
-        <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{duration:0.8}} className='relative flex justify-center px-4 pt-20 min-h-screen bg-linear-to-b from-indigo-50 to-white overflow-hidden'>
+        <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{duration:0.8}} className='relative flex justify-center px-4 pt-20 min-h-screen bg-linear-to-b bg-gray-100'>
             <div className='flex flex-col w-6xl'>
                 <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:0.6}} className='mb-8 text-center'>
                     <h2 className="text-4xl font-bold text-gray-800">Browse by Year</h2>

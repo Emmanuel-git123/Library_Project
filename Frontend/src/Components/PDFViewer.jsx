@@ -1,74 +1,65 @@
-import { Document, Page, pdfjs } from "react-pdf";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Document, Page} from "react-pdf";
+import toast from "react-hot-toast";
 
-import worker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+import { pdfjs } from "react-pdf";
+import pdfWorker from "pdfjs-dist/build/pdf.worker?url";
 
-pdfjs.GlobalWorkerOptions.workerSrc = worker;
+pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 
 const PDFViewer = () => {
   const { id } = useParams();
-  const [url, setUrl] = useState(null);
-
+  const [fileUrl, setFileUrl] = useState(null);
   const [numPages, setNumPages] = useState(null);
-  const [pageNumber,setPageNumber]=useState(0);
-  
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [workerError, setWorkerError] = useState(false);
-
-  const onDocumentSuccess=({numPages})=>{
-    setNumPages(numPages);
-    setPageNumber(1);
-  };
-
 
   useEffect(() => {
-    const fetchSignedUrl = async () => {
+    const fetchPdf = async () => {
       try {
-        
         const token = localStorage.getItem("token");
-        
-        if (!token) {
-          throw new Error("No authentication token found");
-        }
 
         const res = await fetch(
           `http://localhost:8081/api/thesis/pdf/${id}`,
           {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
           }
         );
 
         if (!res.ok) {
-          throw new Error(`Failed to fetch PDF: ${res.statusText}`);
+          toast.error("Failed to load PDF");
+          return;
         }
 
-        const data = await res.json();
-        
-        if (!data.url) {
-          throw new Error("No URL returned from server");
-        }
+        const data=await res.json();
+        setFileUrl(data.url);
+        console.log("SIGNED URL:", data.url);
 
-        setUrl(data.url);
       } catch (err) {
-        console.error("Error fetching PDF:", err);
-        setError(err.message);
-      } 
-
+        console.error(err);
+        toast.error("Error loading PDF");
+      }
     };
 
-    if (id) {
-      fetchSignedUrl();
-    }
+    fetchPdf();
   }, [id]);
 
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  };
 
   return (
-    <div>
-        <Document file={url} onLoadSuccess={onDocumentSuccess}>
-            <Page height={600} pageNumber={pageNumber}/>
+    <div className="flex flex-col items-center p-6">
+      {fileUrl ? (
+        <Document file={fileUrl} onLoadSuccess={onDocumentLoadSuccess}>
+          {Array.from(new Array(numPages), (el, index) => (
+            <Page key={index} pageNumber={index + 1} />
+          ))}
         </Document>
+      ) : (
+        <p>Loading PDF...</p>
+      )}
     </div>
   );
 };

@@ -24,9 +24,14 @@ const Upload = () => {
 
     const [newAuthor, setNewAuthor] = useState(false);
     const [authorName, setAuthorName] = useState("");
-    const [authorEmail, setAuthorEmail] = useState("");
+    // const [authorEmail, setAuthorEmail] = useState("");
     const [authorDept, setAuthorDept] = useState("");
     const [authorDegree, setAuthorDegree] = useState("");
+
+    const [newSupervisor, setNewSupervisor] = useState(false);
+    const [supervisorName, setSupervisorName] = useState("");
+    // const [supervisorEmail, setSupervisorEmail] = useState("");
+    const [supervisorDept, setSupervisorDept] = useState("");
 
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -194,7 +199,7 @@ const Upload = () => {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ name: authorName, email: authorEmail, role: "Author", departmentId: authorDept, degreeType: authorDegree })
+                body: JSON.stringify({ name: authorName, role: "Author", departmentId: authorDept, degreeType: authorDegree })
             })
             const res = await data.json();
             if (data.ok) {
@@ -209,14 +214,50 @@ const Upload = () => {
             toast.error('Error creating author');
         }
     }
+    const handleNewSupervisor = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem("token");
+
+        if (!supervisorName || !supervisorDept) {
+            toast.error("Please fill all required fields");
+            return;
+        }
+
+        try {
+            const data = await fetch("http://localhost:8081/api/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    name: supervisorName,
+                    role: "Supervisor",
+                    departmentId: supervisorDept
+                })
+            });
+
+            const res = await data.json();
+
+            if (data.ok) {
+                toast.success("Supervisor created successfully");
+                window.location.reload();
+            } else {
+                toast.error(res.message);
+            }
+
+        } catch (error) {
+            console.error("Error creating supervisor:", error);
+            toast.error("Error creating supervisor");
+        }
+    }
     return (
         <Box maxW="3xl" mx="auto" className='py-4 px-8 border'>
-            {newAuthor && <div className=' flex flex-col  gap-2 w-lg '>
-                <div className='flex flex-col border p-3 w-lg gap-1'>
+            {newAuthor && 
+            <div className='fixed z-50 flex flex-col bg-amber-100 p-4 gap-2 w-fit '>
+                <div className='flex flex-col p-3 w-lg gap-2'>
                     <label>Name:</label>
                     <input value={authorName} onChange={(e) => setAuthorName(e.target.value)} type="text" className='border' />
-                    <label>Email (optional):</label>
-                    <input value={authorEmail} onChange={(e) => setAuthorEmail(e.target.value)} type="text" className='border' />
                     <label>Department:</label>
                     <select value={authorDept} onChange={(e) => setAuthorDept(e.target.value)} className="border">
                         <option value="">Select Department</option>
@@ -228,7 +269,7 @@ const Upload = () => {
                     </select>
                     <label>DegreeType:</label>
                     <div>
-                        {["Btech", "MA", "MSc", "MTech", "PhD"].map((deg) => (
+                        {['Btech', 'MA', 'MSc','MTech','MTech by Research','PhD'].map((deg) => (
                             <div key={deg}>
                                 <input type="radio" value={deg} onChange={(e) => setAuthorDegree(e.target.value)} checked={authorDegree === deg} id={deg} className='border' />
                                 <label>{deg}</label>
@@ -241,10 +282,35 @@ const Upload = () => {
                         setNewAuthor(false);
                         setAuthorDegree("");
                         setAuthorDept("");
-                        setAuthorEmail("");
                         setAuthorName("");
+                        setAuthorId("default");
                     }} className='border px-2 py-1 rounded bg-amber-200 '>Cancel</button>
                     <button onClick={handleNewAuthor} className='border px-2 py-1 rounded bg-amber-200 '>Submit</button>
+                </div>
+            </div>}
+            {newSupervisor && 
+            <div className='fixed z-50 flex flex-col bg-amber-100 p-4 gap-2 w-fit '>
+                <div className='flex flex-col p-3 w-lg gap-2'>
+                    <label>Name:</label>
+                    <input value={supervisorName} onChange={(e) => setSupervisorName(e.target.value)} type="text" className='border' />
+                    <label>Department:</label>
+                    <select value={supervisorDept} onChange={(e) => setSupervisorDept(e.target.value)} className="border">
+                        <option value="">Select Department</option>
+                        {departments.map((d) => (
+                            <option key={d._id} value={d._id}>
+                                {d.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className=' flex gap-3  flex-row-reverse'>
+                    <button onClick={() => {
+                        setNewSupervisor(false);
+                        setSupervisorDept("");
+                        setSupervisorName("");
+                        setSupervisorId("default");
+                    }} className='border px-2 py-1 rounded bg-amber-200 '>Cancel</button>
+                    <button onClick={handleNewSupervisor} className='border px-2 py-1 rounded bg-amber-200 '>Submit</button>
                 </div>
             </div>}
             
@@ -258,7 +324,7 @@ const Upload = () => {
                     <NativeSelect.Root value={authorId} onChange={(e) => {
                         if (e.target.value == 'new') {
                             setNewAuthor(true);
-                            setAuthorId("");
+                            setAuthorId("default");
                         }
                         else {
                             setAuthorId(e.target.value);
@@ -266,7 +332,7 @@ const Upload = () => {
                     }} className='border'>
 
                         <NativeSelect.Field>
-                            <option value="">Select Author</option>
+                            <option value="default">Select Author</option>
                             <option value="new">+ Add a new author</option>
                             {author.map(a => (
                                 <option key={a._id} value={a._id}>
@@ -278,9 +344,18 @@ const Upload = () => {
 
                     </NativeSelect.Root>
                     <Field.Label>Supervisor:</Field.Label>
-                    <NativeSelect.Root value={supervisorId} onChange={(e) => setSupervisorId(e.target.value)} className='border'>
+                    <NativeSelect.Root value={supervisorId} onChange={(e) => {
+                        if (e.target.value == 'new') {
+                            setNewSupervisor(true);
+                            setSupervisorId("");
+                        }
+                        else {
+                            setSupervisorId(e.target.value);
+                        }
+                    }} className='border'>
                         <NativeSelect.Field>
                             <option value="">Select Supervisor</option>
+                            <option value="new">+ Add a new Supervisor</option>
                             {supervisor.map(a => (
                                 <option key={a._id} value={a._id}>
                                     {a.name}
@@ -313,7 +388,7 @@ const Upload = () => {
                     <div>
                         <label>Degree Type:</label>
                         <div>
-                            {["Btech", "MA", "MSc", "MTech", "PhD"].map((deg) => (
+                            {['Btech', 'MA', 'MSc','MTech','MTech by Research','PhD'].map((deg) => (
                                 <div key={deg}>
                                     <input type="checkbox" defaultChecked value={deg} onChange={(e) => setDegree(e.target.value)} checked={degree === deg} id={deg} className='checkbox checkbox-sm text-black' />
                                     <label>{deg}</label>

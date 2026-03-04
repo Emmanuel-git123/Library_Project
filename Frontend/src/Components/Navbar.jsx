@@ -6,6 +6,7 @@ import { Search, X, Camera, Mic } from "lucide-react";
 import { useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { Button, Stack, Text } from "@chakra-ui/react"
+import CommandPalette from "../Components/CommandPalette";
 
 const Navbar = () => {
     const [token,setToken] = useState(false);
@@ -30,8 +31,11 @@ const Navbar = () => {
             <div className='flex items-center justify-center py-3 bg-blue-950'>
                 <img src={banner} alt="banner.jpeg" className='bg-blue-950'/>
             </div>
+            <div className="flex items-center gap-4">
+                <CommandPalette/>
+            </div>
             <div>
-                <div className="flex items-center justify-evenly bg-blue-950 mb-1">
+                <div className="flex items-center justify-evenly bg-blue-950 mb-0.2">
                     <Link to="/" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Home</Link>
                     <Link to="/info" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>About</Link>
                     <Link to="/view/year" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Year</Link>
@@ -50,7 +54,8 @@ const Navbar = () => {
                         :<Link to="/login" className='group relative overflow-hidden text-sm w-36 bg-gray-800 h-6 text-center border-0 rounded-2xl text-white opacity-500 hover:bg-gray-900 focus:outline-4 focus-outline-offset-2 focus:outline-black'>
                             <span className='absolute inset-0 bg-white opacity-30 scale-0 group-hover:scale-200 transition-transform duration-1000 rounded-2xl w-36'></span>
                             <span className='relative z-10'>Login</span>
-                        </Link>}
+                        </Link>
+                        }
                         {token&&role=='HEAD_ADMIN'&&(
                             // <button onClick={()=>navigate('/admin/invite')} className='px-3 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-xs'>Add Admin</button>
                             <Stack direction="row" align="center" gap="3">
@@ -58,14 +63,15 @@ const Navbar = () => {
                                 <Button size="xs" colorPalette="pink" className='shadow-xs hover:shadow-lg'>Add Admin</Button>
                             </Stack>
                         )}
-                        {/* <Link to='/admin/invite' className='mx-2 underline text-indigo-700 text-sm hover:text-red-500'>Add Admin</Link> */}
-                    </div>
-                    <div className="w-full max-w-xl px-4 mt-3">
-                        <div className="flex items-center bg-white rounded-full shadow-lg px-4 py-2 gap-3 hover:outline-none focus:outline-none border hover:border-2">
-                            <Search className="text-blue-950" size={22} />
-                            <input type="text" placeholder="Search..." className="flex-1 hover:outline-none focus:outline-none text-gray-700 placeholder-gray-400" />
+                        <div className="flex items-center w-[500px] rounded-full shadow-lg px-5 py-2 gap-4 bg-white border border-gray-200">
+                            <Search className="text-blue-950" size={26} />
+                            <input
+                                type="text"
+                                placeholder="Search..."
+                                className="flex-1 outline-none text-lg text-gray-700 placeholder-gray-400"
+                            />
                             <button className="text-gray-400 hover:text-gray-600">
-                                <X size={18} />
+                                <X size={20} />
                             </button>
                         </div>
                     </div>

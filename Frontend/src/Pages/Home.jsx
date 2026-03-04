@@ -2,21 +2,37 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import icon from '../assets/icon.png'
 import image from '../assets/lib-july15.jpg'
+import RecentPublications from "../Components/RecentPublications";
+import { Search, X} from "lucide-react";
 
 const Home = () => {
   return (
     <div>
       <div>
-        <div className="px-10 py-3 flex justify-center">
-            <img src={image} alt="library-picture" className="w-6xl object-cover"></img>
+
+        <div className="relative w-full">
+          <img
+            src={image}
+            alt="library-picture"
+            className="w-full h-150 object-cover opacity-80"
+          />
         </div>
-      <div className='flex flex-col items-center'>
-        <div className='flex justify-center items-center font-bold text-gray-600 text-lg mb-2'>Welcome to ethesis</div>
-        {/* <div className=' flex justify-center items-center gap-2'>
-          <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>Atom</p></div>
-          <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>RSS 1.0</p></div>
-          <div className='flex items-center'><img src={icon} alt="icon.png" className='size-4 mx-0.5' /><p className='text-s text-gray-500'>RSS 2.0</p></div>
+
+        {/* <div className="w-full max-w-3xl px-4 mt-3 mx-auto">
+            <div className="flex items-center bg-white rounded-full shadow-lg px-4 py-2 gap-2 hover:outline-none focus:outline-none border border-black">
+                <Search className="text-blue-950" size={22} />
+                <input type="text" placeholder="Search..." className="flex-1 hover:outline-none focus:outline-none text-gray-700 placeholder-gray-400" />
+                <button className="text-gray-400 hover:text-gray-600">
+                    <X size={18} />
+                </button>
+            </div>
+        </div>
+
+        <div className="flex justify-center">
+            <img src={image} alt="library-picture" className="w-full h-150 object-cover"></img>
         </div> */}
+      {/* <div className='flex flex-col items-center'>
+        <div className='flex justify-center items-center font-bold text-gray-600 text-lg mb-2'>Welcome to ethesis</div>
         <div className='flex items-center justify-center mb-2'>
           <div className='grid grid-cols-3 w-fit bg-gray-300'>
             <div className='flex flex-col border w-3xs p-1 text-sm'>
@@ -71,10 +87,12 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div>
-        <div className="flex justify-center font-bold mb-2 mt-5">Recent Research Publications</div>
-        <div className="flex justify-center">
+      </div> */}
+      
+        <div>
+          <RecentPublications />
+
+        {/* <div className="flex justify-center">
           <div className="h-170 w-300 border flex flex-col justify-evenly items-center">
             <div className="h-30 w-290 border flex">
               <div className="h-26 w-26 border-2 border-opacity-50 mt-2 ml-2">Photo</div>
@@ -122,9 +140,9 @@ const Home = () => {
               <div className="ml-35">share button</div>
             </div>
           </div>
+        </div> */}
         </div>
       </div>
-    </div>
     </div>
   )
 }
