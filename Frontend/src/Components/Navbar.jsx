@@ -6,6 +6,7 @@ import { Search, X, Camera, Mic } from "lucide-react";
 import { useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { Button, Stack, Text } from "@chakra-ui/react"
+import CommandPalette from "../Components/CommandPalette";
 
 const Navbar = () => {
     const [token,setToken] = useState(false);
@@ -29,6 +30,9 @@ const Navbar = () => {
         <div>
             <div className='flex items-center justify-center py-3 bg-blue-950'>
                 <img src={banner} alt="banner.jpeg" className='bg-blue-950'/>
+            </div>
+            <div className="flex items-center gap-4">
+                <CommandPalette/>
             </div>
             <div>
                 <div className="flex items-center justify-evenly bg-blue-950 mb-0.2">

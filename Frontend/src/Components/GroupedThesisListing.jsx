@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
-const GroupedThesisListing = ({ theses, authors, grouping = 'No Grouping' }) => {
+const GroupedThesisListing = ({ theses, grouping = 'No Grouping' }) => {
   const groupedData = useMemo(() => {
     if (grouping === 'Creators') {
       const groups = {}
       theses.forEach(thesis => {
-        const authorName = authors[thesis.author] || thesis.author
+        const authorName = thesis.author?.name || 'Unknown Author'
         const initial = authorName.charAt(0).toUpperCase()
         if (!groups[initial]) {
           groups[initial] = []
@@ -31,7 +31,7 @@ const GroupedThesisListing = ({ theses, authors, grouping = 'No Grouping' }) => 
         if (!groups[type]) {
           groups[type] = []
         }
-        groups[type].push({ ...thesis, authorName: authors[thesis.author] || thesis.author })
+        groups[type].push({ ...thesis, authorName: thesis.author?.name || 'Unknown Author' })
       })
       
       Object.keys(groups).forEach(type => {
@@ -47,10 +47,10 @@ const GroupedThesisListing = ({ theses, authors, grouping = 'No Grouping' }) => 
     } else {
       return { 'All': theses.map(thesis => ({ 
         ...thesis, 
-        authorName: authors[thesis.author] || thesis.author 
+        authorName: thesis.author?.name || 'Unknown Author'
       })).sort((a, b) => a.title.localeCompare(b.title)) }
     }
-  }, [theses, authors, grouping])
+  }, [theses, grouping])
 
   const jumpToLetters = Object.keys(groupedData).sort()
 
@@ -94,10 +94,10 @@ const GroupedThesisListing = ({ theses, authors, grouping = 'No Grouping' }) => 
               <div key={thesis._id} className="border-b border-gray-200 pb-2">
                 <div className="text-sm text-gray-600 mb-1">
                   <Link 
-                    to={`/view/author/${thesis.author}`} 
+                    to={`/view/author/${thesis.author?._id}`} 
                     className="text-indigo-700 underline hover:text-indigo-900"
                   >
-                    {thesis.authorName}
+                    {thesis.author.name}
                   </Link>
                   <span className="ml-2">({thesis.year})</span>
                 </div>

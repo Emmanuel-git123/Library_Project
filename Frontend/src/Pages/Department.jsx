@@ -20,7 +20,9 @@ const Department = () => {
           
           const counts = {}
           theses.forEach(thesis => {
-            counts[thesis.departmentId] = (counts[thesis.departmentId] || 0) + 1
+            if (!thesis.departmentId) return
+            const deptId = typeof thesis.departmentId === "object" ? thesis.departmentId._id: thesis.departmentId
+            counts[deptId] = (counts[deptId] || 0) + 1
           })
           setThesisCounts(counts)
           setDepartments(deptData.departments)
@@ -53,7 +55,7 @@ const Department = () => {
             </li>
             
             {departments.map(dept=> (
-              <li  className="ml-6 list-inside text-sm">
+              <li key={dept._id} className="ml-6 list-inside text-sm">
                 <ul className="ml-6 space-y-1">
                     <li key={dept._id} className="list-disc list-inside text-sm">
                       <Link 

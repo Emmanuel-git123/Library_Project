@@ -23,7 +23,11 @@ const YearSelection = () => {
           const dept = departments.find(d => d._id === deptId)
           setDepartment(dept)
           
-          const deptTheses = theses.filter(thesis => thesis.departmentId === deptId)
+          const deptTheses = theses.filter(thesis =>{
+            const id=thesis.departmentId?._id || thesis.departmentId
+            return id === deptId
+          })
+          
           const yearCount = {}
           deptTheses.forEach(thesis => {
             yearCount[thesis.year] = (yearCount[thesis.year] || 0) + 1
