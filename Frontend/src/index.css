@@ -1,5 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
+@theme {
+  --font-Bebas: "Bebas Neue", sans-serif;
+  --font-Archivo: "Archivo Black", sans-serif;
+}
 
 /* @plugin "daisyui"; */
 
@@ -123,6 +129,8 @@
     @apply bg-background text-foreground;
   }
 }
+/*
 @plugin "daisyui" {
   themes: false;
 }
+*/
