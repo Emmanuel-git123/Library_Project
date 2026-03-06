@@ -44,31 +44,32 @@ const Department = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col w-2xl">
+      <div className="flex flex-col">
         <h2 className="font-semibold text-lg text-gray-600 mb-2 text-center">Browse by Division and Year</h2>
         <p className="text-sm mb-2">Please select a value to browse from the list below.</p>
 
-        <div className="flex flex-col ml-5">
-          <ul className="space-y-1 text-left">
-            <li className='text-indigo-700 underline text-sm list-disc list-inside'>
-              <Link to="/view/dept/all">Departments ({getTotalCount()})</Link>
-            </li>
-            
+        <div className="flex flex-col">
+          <div className="space-y-1 text-left">
+            <div className='text-md hover:text-blue-600 '>
+              <Link to="/view/dept/all">Departments({getTotalCount()}) :</Link>
+            </div>
+            <div className='grid grid-cols-2 border-2 gap-10'>
             {departments.map(dept=> (
-              <li key={dept._id} className="ml-6 list-inside text-sm">
-                <ul className="ml-6 space-y-1">
-                    <li key={dept._id} className="list-disc list-inside text-sm">
+              <div key={dept._id} className="w-full text-sm border-4 rounded-2xl bg-gray-100 text-center px-2.5 py-5 flex justify-center items-center">
+                <div>
+                    <div key={dept._id} className="list-disc list-inside text-sm">
                       <Link 
                         to={`/view/dept/${dept._id}/years`} 
                         className="text-indigo-700 underline text-sm hover:text-red-500"
                       >
                         Department of {dept.name} ({getDepartmentCount(dept._id)})
                       </Link>
-                    </li>
-                </ul>
-              </li>
+                    </div>
+                </div>
+              </div>
             ))}
-          </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
