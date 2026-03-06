@@ -11,6 +11,7 @@ import CommandPalette from "../Components/CommandPalette";
 const Navbar = () => {
     const [token,setToken] = useState(false);
     const [role,setRole] = useState(null);
+    const [click,setClick] = useState(false);
     const navigate=useNavigate();
     useEffect(() => {
         const check=localStorage.getItem("token");
@@ -34,7 +35,7 @@ const Navbar = () => {
             <div className="flex items-center gap-4">
                 <CommandPalette/>
             </div>
-            <div>
+            <div className=''>
                 <div className="flex items-center justify-evenly bg-blue-950 mb-0.2">
                     <Link to="/" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Home</Link>
                     <Link to="/info" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>About</Link>

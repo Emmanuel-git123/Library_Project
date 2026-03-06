@@ -7,7 +7,7 @@ import Not_found from './Pages/Not_found'
 import About_Us from './Pages/About_Us'
 import Login from './Pages/Login'
 import Register from './Pages/Register'
-import Year from './Pages/Year'
+import Year from './Components/Year'
 import Subject from './Pages/Subject'
 import SubjectDetail from './Pages/SubjectDetail'
 import Department from './Pages/Department'
@@ -16,8 +16,6 @@ import Authors from './Pages/Authors'
 import Supervisors from './Pages/Supervisors'
 import ThesisType from './Pages/ThesisType'
 import ThesisListing from './Pages/ThesisListing'
-import YearSelection from './Pages/YearSelection'
-import SupervisorYearSelection from './Pages/SupervisorYearSelection'
 import ThesisDetail from './Pages/ThesisDetail'
 import Upload from './Pages/Upload'
 import { Toaster } from 'react-hot-toast'
@@ -28,7 +26,7 @@ import PDFViewer from './Components/PDFViewer'
 
 const App = () => {
   return (
-    <div className='mx-4'>
+    <div className=''>
       <Toaster position="top-center" reverseOrder={false} />
       <Navbar />
       <Routes>
@@ -36,7 +34,7 @@ const App = () => {
         <Route path='/info' element={<About_Us/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
-        <Route path='/view/year' element={<Year/>}/>
+        <Route path='/view/dept/:deptId/years' element={<Year/>}/>
         <Route path='/view/year/:year' element={<ThesisListing/>}/>
         <Route path='/view/subject' element={<Subject/>}/>
         <Route path='/view/subject/all' element={<ThesisListing/>}/>
@@ -45,12 +43,11 @@ const App = () => {
         <Route path='/view/dept' element={<Department/>}/>
         <Route path='/view/dept/all' element={<ThesisListing/>}/>
         <Route path='/view/dept/:id' element={<ThesisListing/>}/>
-        <Route path='/view/dept/:deptId/years' element={<YearSelection/>}/>
         <Route path='/view/dept/:deptId/year/:year' element={<ThesisListing/>}/>
         <Route path='/view/author' element={<Authors/>}/>
         <Route path='/view/author/:id' element={<ThesisListing/>}/>
         <Route path='/view/supervisor' element={<Supervisors/>}/>
-        <Route path='/view/supervisor/:supervisorId/years' element={<SupervisorYearSelection/>}/>
+        <Route path='/view/supervisor/:supervisorId/years' element={<Year/>}/>
         <Route path='/view/supervisor/:supervisorId/year/:year' element={<ThesisListing/>}/>
         <Route path='/view/thesis_type' element={<ThesisType/>}/>
         <Route path='/view/thesis_type/:id' element={<ThesisListing/>}/>
@@ -59,6 +56,7 @@ const App = () => {
         <Route path='/view/upload' element={<ProtectedRoute> <ExtractMetaData/></ProtectedRoute>}/>
         <Route path='/admin/invite' element={<ProtectedRoute><AdminInvite/></ProtectedRoute>}/>
         <Route path='/thesis/:id' element={<ThesisDetail/>}/>
+        <Route path='/view/year' element={<Year/>}/>
         <Route path='/*' element={<Not_found/>}/>
       </Routes>
       <Footer />

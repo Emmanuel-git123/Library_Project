@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const Year = () => {
     const [year, setYear] = useState([]);
     const [search,setSearch] = useState("");
+    const [edho,setEdho] = useState("year");
+    const {deptId,supervisorId} = useParams();
 
     useEffect(() => {
         const fetchYear = async () => {
@@ -13,8 +15,25 @@ const Year = () => {
                 const data = await response.json();
                 console.log(data);
                 if (response.ok) {
+                    let theses=data.required_thesis;
+                    const currentPath=window.location.pathname;
+                    let filterType='year';
+                    if(currentPath.includes('/view/dept/')){
+                        filterType='dept'
+                    }
+                    else if(currentPath.includes('/view/supervisor/')){
+                        filterType='supervisor'
+                    }
+                    if(filterType=='dept'&&deptId){
+                        theses=theses.filter(a=>a.departmentId&&a.departmentId._id===deptId)
+                        setEdho("dept");
+                    }
+                    else if(filterType=='supervisor'&&supervisorId){
+                        theses=theses.filter(a=>a.supervisor&&a.supervisor._id===supervisorId)
+                        setEdho("supervisor");
+                    }
                     const yearCount = {}; 
-                    data.required_thesis.forEach(t => { yearCount[t.year] = (yearCount[t.year] || 0) + 1; });
+                    theses.forEach(t => { yearCount[t.year] = (yearCount[t.year] || 0) + 1; });
                     const uniqueSortedYears = Object.entries(yearCount).sort((a, b) => b[0] - a[0]);
                     setYear(uniqueSortedYears);
                 } else {
@@ -25,7 +44,7 @@ const Year = () => {
             }
         };
         fetchYear();
-    }, [])
+    }, [deptId, supervisorId,window.location.pathname])
     const filteredYears = year.filter(([y]) =>
         y.toString().includes(search)
     );
@@ -43,7 +62,7 @@ const Year = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8 gap-y-10'>
                     <AnimatePresence initial={false}>
                         {filteredYears.map(([y,count],index)=>(
-                            <Link key={y} to={`/view/year/${y}`} className=''>
+                            <Link key={y} to={edho === "year"?`/view/year/${y}`:edho==="supervisor"?`/view/supervisor/${supervisorId}/year/${y}`:`/view/dept/${deptId}/year/${y}`} className=''>
                                 <motion.div layout initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -20, scale: 0.95 }} transition={{ duration: 0.6 }} className=''>
                                     <motion.div className='border p-6 rounded-xl hover:rounded-3xl hover:rotate-3 hover:scale-105 shadow-lg hover:shadow-2xl duration-200 hover:-translate-y-3 bg-white border-gray-200 hover:bg-amber-50 transition-all w-full'>
                                         <div className='mb-2 pl-1'>
