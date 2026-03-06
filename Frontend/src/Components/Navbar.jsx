@@ -11,6 +11,7 @@ import CommandPalette from "../Components/CommandPalette";
 const Navbar = () => {
     const [token,setToken] = useState(false);
     const [role,setRole] = useState(null);
+    const [click,setClick] = useState(false);
     const navigate=useNavigate();
     useEffect(() => {
         const check=localStorage.getItem("token");
@@ -34,7 +35,7 @@ const Navbar = () => {
             <div className="flex items-center gap-4">
                 <CommandPalette/>
             </div>
-            <div>
+            <div className=''>
                 <div className="flex items-center justify-evenly bg-blue-950 mb-0.2">
                     <Link to="/" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Home</Link>
                     <Link to="/info" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>About</Link>
@@ -46,7 +47,7 @@ const Navbar = () => {
                     <Link to="/view/thesis_type" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Thesis Type</Link>
                     {token&&<Link to='/view/upload' className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center'>Upload Thesis</Link>}                </div>
                 <div className='border border-white px-3 flex justify-between py-0.5 bg-gray-100'>
-                    <div className='flex flex-row gap-200 justify-evenly items-center m-3'>
+                    <div className='flex flex-row justify-between w-full items-center m-3'>
                         {token?
                         <Link to="/" onClick={handleLogOut} className='underline text-indigo-700 text-sm hover:text-red-500'>Log out</Link>
                         // :<Link to="/login" className='underline text-indigo-700 text-sm hover:text-red-500'>Login</Link>}\
@@ -62,17 +63,14 @@ const Navbar = () => {
                                 <Button size="xs" colorPalette="pink" className='shadow-xs hover:shadow-lg'>Add Admin</Button>
                             </Stack>
                         )}
-                        <div className="flex items-center w-[500px] rounded-full shadow-lg px-5 py-2 gap-4 bg-white border border-gray-200">
+                        <div className="flex items-center rounded-full shadow-lg px-5 py-2 gap-4 bg-white border border-gray-200">
                             <Search className="text-blue-950" size={26} />
-                            <input
-                                type="text"
-                                placeholder="Search..."
-                                className="flex-1 outline-none text-lg text-gray-700 placeholder-gray-400"
-                            />
+                            <button onClick={()=>setClick(true)} className="flex-1 hover:cursor-text outline-none text-lg text-gray-700 placeholder-gray-400">Search...(or press ctrl + k)</button>
                             <button className="text-gray-400 hover:text-gray-600">
                                 <X size={20} />
                             </button>
                         </div>
+                       {/* <CommandPalette open={click} setOpen={setClick} /> */}
                     </div>
                 </div>
             </div>

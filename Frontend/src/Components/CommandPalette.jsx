@@ -72,7 +72,7 @@ export default function CommandPalette() {
             exit={{ opacity: 0, scale: 0.95, y: -10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
           >
-            <Command className="w-[600px] max-w-[90%] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+            <Command className=" max-w-[90%] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
               
               <div className="border-b px-4 py-3">
                 <Command.Input
@@ -81,7 +81,7 @@ export default function CommandPalette() {
                 />
               </div>
 
-              <Command.List className="max-h-[350px] overflow-y-auto p-2">
+              <Command.List className="overflow-y-auto p-2">
                 <Command.Empty className="text-center text-sm text-gray-500 py-6">
                   No thesis found.
                 </Command.Empty>

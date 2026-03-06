@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const ThesisType = () => {
   const [thesisTypes, setThesisTypes] = useState([])
@@ -54,20 +55,40 @@ const ThesisType = () => {
         <div className="flex flex-col ml-5">
           <ul className="space-y-1 text-left">
             {thesisTypes.map(type => (
-              <li key={type} className="list-disc list-inside text-sm">
-                <Link 
-                  to={`/view/thesis_type/${type}`}
-                  className="text-indigo-700 underline hover:text-red-500"
-                >
-                  {type} ({getThesisTypeCount(type)})
-                </Link>
-              </li>
+              <div>
+                <div>
+                  <li key={type} className="list-disc list-inside text-sm">
+                    <Link 
+                      to={`/view/thesis_type/${type}`}
+                      className="text-indigo-700 underline hover:text-red-500"
+                      >
+                      {type} ({getThesisTypeCount(type)})
+                    </Link>
+                  </li>
+                </div>
+              </div>
             ))}
+            <AnimatePresence>
+
+            <div>
+            {thesisTypes.map((type,index) => (
+              <div className=''>
+                    <motion.div initial={{opacity:0, x:-20}} animate={{opacity:1, x:0}} transition={{ duration: 0.2, delay: index * 0.1}} whileHover={{backgroundColor:"tomato"}} className='border w-full h-full p-4 flex justify-between'>
+                      <div className='flex gap-2'>
+                        <div>{index+1}</div>
+                        <div>{type}</div>
+                      </div>
+                      <div>{getThesisTypeCount(type)} Theses</div>
+                    </motion.div>
+                </div>
+            ))}
+            </div>
+            </AnimatePresence>
           </ul>
         </div>
       </div>
     </div>
   )
 }
-
+//['Btech', 'MA', 'MSc','MTech','MTech by Research','PhD']
 export default ThesisType
