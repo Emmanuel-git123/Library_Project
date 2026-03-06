@@ -1,22 +1,30 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import icon from '../assets/icon.png'
 import image from '../assets/lib-july15.jpg'
 import RecentPublications from "../Components/RecentPublications";
 import { Search, X} from "lucide-react";
+import image_ from '../assets/underline.jpg';
+import ImageSlider from "../Components/ImageSlider";
 
 const Home = () => {
   return (
     <div>
       <div>
+        <div className="text-center">
+          <div className="flex flex-col justify-center">
+            <h1 className="text-3xl font-bold font-serif">NATIONAL INSTITUTE OF TECHNOLOGY</h1>
+            <h1 className="text-3xl font-bold font-serif">TIRUCHIRAPPALLI</h1>
+            <img src={image_} alt="underline" className="w-full h-10 object-contain opacity-90"></img>
+          </div>
+        </div>
 
-        <div className="relative w-full">
+        {/* <div className="relative w-full">
           <img
             src={image}
             alt="library-picture"
             className="w-full h-150 object-cover opacity-80"
           />
-        </div>
+        </div> */}
 
         {/* <div className="w-full max-w-3xl px-4 mt-3 mx-auto">
             <div className="flex items-center bg-white rounded-full shadow-lg px-4 py-2 gap-2 hover:outline-none focus:outline-none border border-black">
@@ -90,6 +98,7 @@ const Home = () => {
       </div> */}
       
         <div>
+          <ImageSlider />
           <RecentPublications />
 
         {/* <div className="flex justify-center">

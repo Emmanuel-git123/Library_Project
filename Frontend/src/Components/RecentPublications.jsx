@@ -1,85 +1,57 @@
 import React from "react";
 
-const publications = [
+const thesisList = [
   {
     id: 1,
-    title: "HelperVortexPreziLeetcodecodingbogi",
-    authors: "Alice Johnson",
+    title: "AI Based Library Recommendation System",
+    author: "Vedanth Boga",
     year: "2025",
-    image: "/images/paper1.jpg",
-    itemType: "	Thesis (Btech)",
-    Supervisor: "	Dr. Robert Smith",
-    Subject: "	Calculus"
+    department: "Computer Science",
   },
   {
     id: 2,
-    title: "Modern Poetry and its Socio-Cultural Impact",
-    authors: "Sophia Brown",
-    year: "2025",
-    image: "/images/paper2.jpg",
-    itemType: "Thesis (MA)",
-    Supervisor: "Dr. John Williams",
-    Subject: "Poetry"
+    title: "Blockchain Based Voting System",
+    author: "Ananya Sharma",
+    year: "2024",
+    department: "Computer Science",
   },
   {
     id: 3,
-    title: "Optimization of Graph Algorithms for Large-Scale Networks",
-    authors: "Alice Johnson",
-    year: "2025",
-    image: "/images/paper3.jpg",
-    itemType: "	Thesis (Btech)",
-    Supervisor: "	Dr. Robert Smith",
-    Subject: "		Graph Algorithms"
-  },
-  {
-    id: 4,
-    title: "Applications of Linear Algebra in Cryptography",
-    authors: "Emily Davis",
+    title: "IoT Smart Agriculture Monitoring",
+    author: "Rahul Kumar",
     year: "2024",
-    image: "/images/paper4.jpg",
-    itemType: "	Thesis (MSc)",
-    Supervisor: "	Dr. John Williams",
-    Subject: "	Linear Algebra"
-  }
+    department: "Electronics",
+  },
 ];
 
-export default function RecentPublications() {
+const RecentPublications = () => {
   return (
-    <div className="px-10 py-4">
-      <div className="flex justify-center font-bold mb-2 mt-5 h-10 text-2xl">Recent Research Publications</div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {publications.map((pub) => (
-          <div
-            key={pub.id}
-            className="flex bg-white border-2 rounded-xl overflow-hidden transition"
-          >
-            {/* <img
-              src={pub.image}
-              alt={pub.title}
-              className="w-32 object-cover"
-            /> */}
-
-            <div className="p-4 flex flex-col justify-between">
-              <h3 className="font-semibold text-lg">
-                {pub.title}
+    <section className="max-w-9xl mx-auto px-6 py-12">
+      <h2 className="text-3xl font-bold mb-8 text-center">
+        Recent Thesis Publications
+      </h2>
+      <div className="flex flex-col gap-6">
+        {thesisList.map((thesis) => (
+          <div key={thesis.id} className="bg-white shadow-lg rounded-xl overflow-hidden border-2 transition">
+            <div className="p-4">
+              <h3 className="text-lg font-semibold">
+                {thesis.title}
               </h3>
-
-              <p className="text-sm text-gray-600">
-                {pub.authors}
+              <p className="text-gray-600 mt-2">
+                {thesis.author}
               </p>
-
-              <p className="text-sm text-gray-600">
-                {pub.Supervisor}
+              <p className="text-sm text-gray-500">
+                {thesis.department} • {thesis.year}
               </p>
-
-              <p className="text-xs text-gray-500">
-                Published: {pub.year}
-              </p>
-
+              <button className="mt-4 text-blue-600 hover:underline hover:cursor-pointer">
+                View Thesis →
+              </button>
             </div>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
-}
+};
+
+export default RecentPublications;

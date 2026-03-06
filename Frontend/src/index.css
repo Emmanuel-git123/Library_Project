@@ -123,6 +123,6 @@
     @apply bg-background text-foreground;
   }
 }
-@plugin "daisyui" {
+/* @plugin "daisyui" {
   themes: false;
-}
+} */
