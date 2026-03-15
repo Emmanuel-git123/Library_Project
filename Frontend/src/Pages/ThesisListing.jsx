@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import GroupedThesisListing from '../Components/GroupedThesisListing'
 
 const ThesisListing = () => {
-  const { type, id, subjectId, deptId, year, category, supervisorId } = useParams()
+  const { type, id, deptId, year, category, supervisorId } = useParams()
   const [theses, setTheses] = useState([])
   const [filterInfo, setFilterInfo] = useState({})
   const [loading, setLoading] = useState(true)
@@ -30,23 +30,11 @@ const ThesisListing = () => {
             filterType = 'supervisor'
           } else if (currentPath.includes('/view/thesis_type/')) {
             filterType = 'thesis_type'
-          } else if (currentPath.includes('/view/subject/') && currentPath.includes('/theses')) {
-            filterType = 'subject'
           } else if (currentPath.includes('/view/dept/') && !currentPath.includes('/years')) {
             filterType = 'dept'
           }
 
-          if (filterType === 'subject' && subjectId) {
-            filteredTheses = filteredTheses.filter(
-              thesis => thesis.subjectId && thesis.subjectId._id === subjectId
-            )
-            const subject = filteredTheses[0]?.subjectId
-            filterTitle = subject
-              ? `Items where Subject is '${subject.name}'`
-              : 'Subject Theses'
-          }
-
-          else if (filterType === 'dept' && id) {
+          if (filterType === 'dept' && id) {
             filteredTheses = filteredTheses.filter(
               thesis => thesis.departmentId && thesis.departmentId._id === id
             )
@@ -117,7 +105,7 @@ const ThesisListing = () => {
             filteredTheses = filteredTheses.filter(
               thesis => thesis.degreeType === id
             )
-            filterTitle = `Items where Thesis Type is '${id}'`
+            id==='Btech'?filterTitle = `${id} Projects`:id==='PhD'?filterTitle = `${id} Theses`:filterTitle = `${id} Dissertations`
           }
 
           filteredTheses.sort((a, b) =>
@@ -138,7 +126,7 @@ const ThesisListing = () => {
     }
 
     fetchTheses()
-  }, [type, id, subjectId, deptId, year, category])
+  }, [type, id, deptId, year, category])
 
   if (loading) {
     return (

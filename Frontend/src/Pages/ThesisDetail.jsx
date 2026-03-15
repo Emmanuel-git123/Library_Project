@@ -83,13 +83,14 @@ const ThesisDetail = () => {
                 (External or sample link)
               </div>
             </div>
-            <Button
-              isDisabled={!thesis.pdfUrl}
-              onClick={getPdfViewUrl}
-              className="bg-indigo-600 text-white px-3 py-1 text-sm rounded hover:bg-indigo-700"
-            >
-              View
-            </Button>
+            {thesis.allowDownload && thesis.pdfUrl && (
+              <Button
+                onClick={getPdfViewUrl}
+                className="bg-indigo-600 text-white px-3 py-1 text-sm rounded hover:bg-indigo-700"
+              >
+                View
+              </Button>
+            )}
           </div>
         </div>
 
@@ -116,7 +117,7 @@ const ThesisDetail = () => {
                     Item Type
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-700">
-                    Thesis ({thesis.degreeType})
+                    {thesis.degreeType==="PhD"?`Thesis`:thesis.degreeType==='Btech'?`Project`:`Dissertation`} ({thesis.degreeType})
                   </td>
                 </tr>
 
@@ -128,22 +129,6 @@ const ThesisDetail = () => {
                     {Array.isArray(thesis.keywords) && thesis.keywords.length > 0
                       ? thesis.keywords.join(', ')
                       : 'N/A'}
-                  </td>
-                </tr>
-
-                <tr className="border-b border-gray-200">
-                  <td className="bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700">
-                    Subjects
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
-                    {thesis.subjectId ? (
-                      <Link
-                        to={`/view/subject/${thesis.subjectId?._id}/theses`}
-                        className="text-indigo-700 underline hover:text-indigo-900"
-                      >
-                        {thesis.subjectId?.name}
-                      </Link>
-                    ) : 'N/A'}
                   </td>
                 </tr>
 

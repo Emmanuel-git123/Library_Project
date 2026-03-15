@@ -136,11 +136,11 @@ const createThesis = async (req, res) => {
             author: req.body.author,
             supervisor: req.body.supervisor,
             departmentId: req.body.departmentId,
-            subjectId: req.body.subjectId || null,
             degreeType: req.body.degreeType,
             year: Number(req.body.year),
             keywords: req.body.keywords ? JSON.parse(req.body.keywords) : [],
-            pdfUrl: s3Key
+            pdfUrl: s3Key,
+            allowDownload: req.body.allowDownload
         };
 
         const new_thesis = new Thesis(data);
@@ -165,14 +165,11 @@ const createThesis = async (req, res) => {
 
 const getAllThesis = async (req, res) => {
     try {
-        const { author, supervisor, departmentId, subjectId, degreeType, year } = req.query;
+        const { author, supervisor, departmentId, degreeType, year } = req.query;
         const filters = {};
 
         if (year) {
             filters.year = year;
-        }
-        if (subjectId) {
-            filters.subjectId = subjectId;
         }
         if (departmentId) {
             filters.departmentId = departmentId;
@@ -191,7 +188,6 @@ const getAllThesis = async (req, res) => {
             .populate("author", "name ")
             .populate("supervisor", "name")
             .populate("departmentId", "name")
-            .populate("subjectId", "name")
             .lean();
 
         res.status(200).json({count: required_thesis.length, required_thesis });
@@ -207,7 +203,6 @@ const getThesisById = async (req, res) => {
             .populate("author", "name email")
             .populate("supervisor", "name")
             .populate("departmentId", "name")
-            .populate("subjectId", "name")
             .lean();
 
         if (!thesis) {
@@ -237,7 +232,6 @@ const updateThesis = async (req, res) => {
             author: req.body.author,
             supervisor: req.body.supervisor,
             departmentId: req.body.departmentId,
-            subjectId: req.body.subjectId,
             degreeType: req.body.degreeType,
             year: req.body.year,
             keywords: req.body.keywords ? JSON.parse(req.body.keywords) : []

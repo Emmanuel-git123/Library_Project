@@ -4,6 +4,8 @@ import { Toaster, toast } from 'react-hot-toast';
 import { Navigate,useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react'
 import { Field, Input, NativeSelect, Box } from "@chakra-ui/react"
+import { Button1 } from '@/Components/Button1';
+import { FormControlLabel, Switch } from '@mui/material';
 const Upload = () => {
     const [title, setTitle] = useState("");
     const [abstract, setAbstract] = useState("");
@@ -13,7 +15,6 @@ const Upload = () => {
     const [supervisorId, setSupervisorId] = useState("");
     const [departments, setDepartments] = useState([]);//all depts data
     const [dept, setDept] = useState("");//selected depts id
-    const [subjects, setSubjects] = useState([]);//all subjs data
     const [subj, setSubj] = useState("");//selected subjs id
     const [degree, setDegree] = useState("");
     const [pdfFile, setPdfFile] = useState(null);
@@ -30,6 +31,8 @@ const Upload = () => {
     const [supervisorName, setSupervisorName] = useState("");
     // const [supervisorEmail, setSupervisorEmail] = useState("");
     const [supervisorDept, setSupervisorDept] = useState("");
+
+    const [allowDownload,setAllowDownload] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -132,11 +135,11 @@ const Upload = () => {
         formData.append("author", authorId);
         formData.append("supervisor", supervisorId);
         formData.append("departmentId", dept);
-        formData.append("subjectId", subj);
         formData.append("degreeType", degree);
         formData.append("pdf", pdfFile);
         formData.append("keywords", JSON.stringify(keywords.split(",").map(k => k.trim())));
         formData.append("year", extractedYear);
+        formData.append("allowDownload", allowDownload);
 
         try {
             const res = await fetch('http://localhost:8081/api/thesis/create', {
@@ -167,22 +170,6 @@ const Upload = () => {
     const handleDeptChange = (e) => {
         const deptId = e.target.value;
         setDept(deptId);
-        const fetchSubjects = async () => {
-            try {
-                const res = await fetch(`http://localhost:8081/api/subjects?departmentId=${deptId}`)
-                const data = await res.json();
-                if (res.ok) {
-                    setSubjects(data.subjects);
-                }
-                else {
-                    toast.error(data.message || "Failed to fetch subjects");
-                }
-            } catch (error) {
-                console.error('Error fetching subjects:', error);
-                toast.error('Error fetching subjects');
-            }
-        }
-        fetchSubjects();
     }
 
     const handleNewAuthor = async (e) => {
@@ -251,6 +238,9 @@ const Upload = () => {
             toast.error("Error creating supervisor");
         }
     }
+    const handleChange=async()=>{
+        setAllowDownload((t)=>!t);
+    }
     return (
         <Box maxW="3xl" mx="auto" className='py-4 px-8 border'>
             {newAuthor && 
@@ -315,7 +305,7 @@ const Upload = () => {
             </div>}
             
             <div className='flex flex-col'>
-                <Field.Root>
+                <Field.Root className='mb-2'>
                     <Field.Label>Title:</Field.Label>
                     <Input value={title} onChange={(e) => setTitle(e.target.value)} type="text" className='border' />
                     <Field.Label>Abstract:</Field.Label>
@@ -376,15 +366,6 @@ const Upload = () => {
                         </NativeSelect.Field>
                         <NativeSelect.Indicator/>
                     </NativeSelect.Root>
-                    <label>Subject:</label>
-                    <select value={subj} onChange={(e) => setSubj(e.target.value)} className="border">
-                        <option value="">Select Subject:</option>
-                        {subjects.map((d) => (
-                            <option key={d._id} value={d._id}>
-                                {d.name}
-                            </option>
-                        ))}
-                    </select>
                     <div>
                         <label>Degree Type:</label>
                         <div>
@@ -407,6 +388,7 @@ const Upload = () => {
                     <label>Year:</label>
                     <input value={year} onChange={(e) => setYear(e.target.value)} type="number" placeholder="Enter year" className="border"/>
                 </Field.Root>
+                <FormControlLabel  required control={<Switch onChange={handleChange} />} label="Allow Downlaod" />
             </div>
             <Button colorPalette="cyan" loading={loading} loadingText="Saving..." onClick={handleSubmit} className='bg-gray-200 my-4 text-gray-700 px-3 py-1 text-sm rounded border hover:bg-gray-300'>Submit</Button>
         </Box>

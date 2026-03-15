@@ -8,10 +8,7 @@ import About_Us from './Pages/About_Us'
 import Login from './Pages/Login'
 import Register from './Pages/Register'
 import Year from './Components/Year'
-import Subject from './Pages/Subject'
-import SubjectDetail from './Pages/SubjectDetail'
 import Department from './Pages/Department'
-// import DepartmentDetail from './Pages/DepartmentDetail'
 import Authors from './Pages/Authors'
 import Supervisors from './Pages/Supervisors'
 import ThesisType from './Pages/ThesisType'
@@ -36,10 +33,6 @@ const App = () => {
         <Route path='/register' element={<Register/>}/>
         <Route path='/view/dept/:deptId/years' element={<Year/>}/>
         <Route path='/view/year/:year' element={<ThesisListing/>}/>
-        <Route path='/view/subject' element={<Subject/>}/>
-        <Route path='/view/subject/all' element={<ThesisListing/>}/>
-        <Route path='/view/subject/:subjectId' element={<SubjectDetail/>}/>
-        <Route path='/view/subject/:subjectId/theses' element={<ThesisListing/>}/>
         <Route path='/view/dept' element={<Department/>}/>
         <Route path='/view/dept/all' element={<ThesisListing/>}/>
         <Route path='/view/dept/:id' element={<ThesisListing/>}/>
