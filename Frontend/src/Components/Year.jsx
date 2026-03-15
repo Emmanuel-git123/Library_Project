@@ -29,7 +29,11 @@ const Year = () => {
                         setEdho("dept");
                     }
                     else if(filterType=='supervisor'&&supervisorId){
-                        theses=theses.filter(a=>a.supervisor&&a.supervisor._id===supervisorId)
+                        theses=theses.filter(a=>{
+                            if(!a.supervisor) return false
+                            const list=Array.isArray(a.supervisor)?a.supervisor:[a.supervisor]
+                            return list.some(s=>(s._id||s)===supervisorId)
+                        })
                         setEdho("supervisor");
                     }
                     const yearCount = {}; 

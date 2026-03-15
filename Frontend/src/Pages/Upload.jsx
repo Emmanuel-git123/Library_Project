@@ -12,7 +12,7 @@ const Upload = () => {
     const [author, setAuthor] = useState([]);
     const [supervisor, setSupervisor] = useState([]);
     const [authorId, setAuthorId] = useState("");
-    const [supervisorId, setSupervisorId] = useState("");
+    const [supervisorIds, setSupervisorIds] = useState([]);
     const [departments, setDepartments] = useState([]);//all depts data
     const [dept, setDept] = useState("");//selected depts id
     const [subj, setSubj] = useState("");//selected subjs id
@@ -116,7 +116,7 @@ const Upload = () => {
         const token = localStorage.getItem("token");
         setLoading(true);
 
-        if (!authorId || !supervisorId || !dept || !degree) {
+        if (!authorId || !supervisorIds.length === 0 || !dept || !degree) {
             setLoading(false);
             toast.error("Please fill all required fields");
             return;
@@ -133,7 +133,7 @@ const Upload = () => {
         formData.append("title", title);
         formData.append("abstract", abstract);
         formData.append("author", authorId);
-        formData.append("supervisor", supervisorId);
+        formData.append("supervisors", JSON.stringify(supervisorIds));
         formData.append("departmentId", dept);
         formData.append("degreeType", degree);
         formData.append("pdf", pdfFile);
@@ -298,7 +298,6 @@ const Upload = () => {
                         setNewSupervisor(false);
                         setSupervisorDept("");
                         setSupervisorName("");
-                        setSupervisorId("default");
                     }} className='border px-2 py-1 rounded bg-amber-200 '>Cancel</button>
                     <button onClick={handleNewSupervisor} className='border px-2 py-1 rounded bg-amber-200 '>Submit</button>
                 </div>
@@ -333,27 +332,34 @@ const Upload = () => {
                         <NativeSelect.Indicator />
 
                     </NativeSelect.Root>
-                    <Field.Label>Supervisor:</Field.Label>
-                    <NativeSelect.Root value={supervisorId} onChange={(e) => {
-                        if (e.target.value == 'new') {
-                            setNewSupervisor(true);
-                            setSupervisorId("");
-                        }
-                        else {
-                            setSupervisorId(e.target.value);
-                        }
-                    }} className='border'>
-                        <NativeSelect.Field>
-                            <option value="">Select Supervisor</option>
-                            <option value="new">+ Add a new Supervisor</option>
-                            {supervisor.map(a => (
-                                <option key={a._id} value={a._id}>
-                                    {a.name}
-                                </option>
-                            ))}
-                        </NativeSelect.Field>
-                        <NativeSelect.Indicator />
-                    </NativeSelect.Root>
+                    <Field.Label>Supervisor(s):</Field.Label>
+                    <div className="flex flex-wrap gap-2 mb-1">
+                        <button
+                            type="button"
+                            onClick={() => setNewSupervisor(true)}
+                            className="text-sm border border-amber-500 text-amber-700 px-2 py-1 rounded hover:bg-amber-50"
+                        >
+                            + Add a new supervisor
+                        </button>
+                    </div>
+                    <div className="border p-2 max-h-40 overflow-y-auto">
+                        {supervisor.map((s) => (
+                            <label key={s._id} className="flex items-center gap-2">
+                            <input type="checkbox" checked={supervisorIds.includes(s._id)}
+                                onChange={(e) => {
+                                    if (e.target.checked) {
+                                        setSupervisorIds((prev) => [...prev, s._id]);
+                                    } else {
+                                        setSupervisorIds((prev) =>
+                                        prev.filter((id) => id !== s._id)
+                                        );
+                                    }
+                                }}
+                            />
+                            {s.name}
+                            </label>
+                        ))}
+                    </div>
                     <Field.Label>Department:</Field.Label>
                     <NativeSelect.Root value={dept} onChange={handleDeptChange} className="border">
                         <NativeSelect.Field>

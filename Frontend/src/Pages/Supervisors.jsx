@@ -25,7 +25,11 @@ const Supervisors = () => {
           
           const counts = {}
           theses.forEach(thesis => {
-            counts[thesis.supervisor._id] = (counts[thesis.supervisor._id] || 0) + 1
+            const sups = Array.isArray(thesis.supervisor) ? thesis.supervisor : (thesis.supervisor ? [thesis.supervisor] : [])
+            sups.forEach(s => {
+              const id = s._id || s
+              if (id) counts[id] = (counts[id] || 0) + 1
+            })
           })
           setThesisCounts(counts)
           

@@ -130,17 +130,22 @@ const createThesis = async (req, res) => {
         }
         // const cloudRes = await uploadToCloud(req.file.buffer);
         const s3Key=await uploadToS3(req.file.buffer,req.file.originalname,req.file.mimetype);
+        let supervisorIds = [];
+
+        if (req.body.supervisors) {
+        supervisorIds = JSON.parse(req.body.supervisors);
+        }
         const data = {
             title: req.body.title,
             abstract: req.body.abstract,
             author: req.body.author,
-            supervisor: req.body.supervisor,
+            supervisor: supervisorIds,
             departmentId: req.body.departmentId,
             degreeType: req.body.degreeType,
             year: Number(req.body.year),
             keywords: req.body.keywords ? JSON.parse(req.body.keywords) : [],
             pdfUrl: s3Key,
-            allowDownload: req.body.allowDownload
+            allowDownload: req.body.allowDownload === "true" ? true : false
         };
 
         const new_thesis = new Thesis(data);
@@ -151,10 +156,12 @@ const createThesis = async (req, res) => {
             { $push: { thesis: new_thesis._id } }
         );
 
-        await User.findByIdAndUpdate(
-            req.body.supervisor,
-            { $push: { thesis: new_thesis._id } }
-        );
+        for (const sid of supervisorIds) {
+            await User.findByIdAndUpdate(
+                sid,
+                { $push: { thesis: new_thesis._id } }
+            );
+        }
         res.status(201).json({ message: "Thesis successfully created", thesis: new_thesis });
     } catch (error) {
         console.error("Error in the createThesis function:", error);
@@ -226,11 +233,14 @@ const deleteThesis = async (req, res) => {
 
 const updateThesis = async (req, res) => {
     try {
+        const supervisorIds = Array.isArray(req.body.supervisor)
+            ? req.body.supervisor
+            : (req.body.supervisor ? [req.body.supervisor] : []);
         const updatedData = {
             title: req.body.title,
             abstract: req.body.abstract,
             author: req.body.author,
-            supervisor: req.body.supervisor,
+            supervisor: supervisorIds,
             departmentId: req.body.departmentId,
             degreeType: req.body.degreeType,
             year: req.body.year,

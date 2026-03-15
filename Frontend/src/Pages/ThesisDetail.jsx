@@ -13,12 +13,11 @@ const ThesisDetail = () => {
   useEffect(() => {
     const fetchThesis = async () => {
       try {
-        const thesisRes = await fetch('http://localhost:8081/api/thesis')
-        const thesisData = await thesisRes.json()
+        const thesisRes = await fetch(`http://localhost:8081/api/thesis/${id}`)
+        const data = await thesisRes.json()
 
         if (thesisRes.ok) {
-          const item = thesisData.required_thesis.find(t => t._id === id)
-          setThesis(item || null)
+          setThesis(data.thesis)
         }
       } catch (err) {
         console.error('Error loading thesis detail:', err)
@@ -153,12 +152,28 @@ const ThesisDetail = () => {
                     Supervisor(s)
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-700">
-                    <Link
-                      to={`/view/supervisor/${thesis.supervisor?._id}`}
-                      className="text-indigo-700 underline hover:text-indigo-900"
-                    >
-                      {thesis.supervisor?.name || "Unknown"}
-                    </Link>
+                    {Array.isArray(thesis.supervisor) && thesis.supervisor.length > 0
+                      ? thesis.supervisor.map((s, i) => (
+                          <span key={s._id || i}>
+                            {i > 0 && ', '}
+                            <Link
+                              to={`/view/supervisor/${s._id}/years`}
+                              className="text-indigo-700 underline hover:text-indigo-900"
+                            >
+                              {s.name || "Unknown"}
+                            </Link>
+                          </span>
+                        ))
+                      : thesis.supervisor?.name != null
+                        ? (
+                            <Link
+                              to={`/view/supervisor/${thesis.supervisor._id}/years`}
+                              className="text-indigo-700 underline hover:text-indigo-900"
+                            >
+                              {thesis.supervisor.name || "Unknown"}
+                            </Link>
+                          )
+                        : "Unknown"}
                   </td>
                 </tr>
 

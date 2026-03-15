@@ -4,7 +4,7 @@ const thesisSchema = new mongoose.Schema({
     title: { type: String, required: true },
     abstract: { type: String, required: true },
     author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    supervisor: { type: mongoose.Schema.Types.ObjectId, ref: "User" , required:true}, 
+    supervisor: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" , required:true}], 
     departmentId: { type: mongoose.Schema.Types.ObjectId, ref: "Department", required: true },
     degreeType: { type: String, enum: ['Btech', 'MA', 'MSc','MTech','MTech by Research','PhD'], required: true },
     pdfUrl: { type: String, required:true },

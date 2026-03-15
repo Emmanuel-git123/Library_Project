@@ -29,9 +29,16 @@ LinearProgressWithLabel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
+const getStatus = (progress) => {
+  if (progress < 40) return "Parsing PDF...";
+  if (progress < 70) return "Extracting abstract...";
+  if (progress < 90) return "Generating keywords...";
+  return "Finishing...";
+};
+
 const ExtractMetaData = () => {
-  const [file,setFile]=useState(null);
-  const [loading,setLoading]=useState(false);
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const navigate=useNavigate();
@@ -42,40 +49,40 @@ const ExtractMetaData = () => {
       return;
     }
     setLoading(true);
-    setProgress(0);
+    setProgress(10);
 
-    const formData=new FormData();
-    formData.append("pdf",file);
+    const formData = new FormData();
+    formData.append("pdf", file);
+    const token = localStorage.getItem("token");
 
-    const token=localStorage.getItem("token");
+    const intervalId = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 90) {
+          return 90;
+        }
+        return prev + 5;
+      });
+    }, 400);
 
     try {
-      const res=await axios.post("http://localhost:8081/api/thesis/extract",
+      const res = await axios.post(
+        "http://localhost:8081/api/thesis/extract",
         formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          onUploadProgress: (progressEvent) => {
-            const percent = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
-            setProgress(percent);
-          }
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      const data=res.data; 
+      setProgress(100);
       toast.success("Metadata extracted!");
 
       navigate("/view/upload/submit",{
         state:{
-          extractedMeta:data,
+          extractedMeta:res.data,
           pdfFile:file
         }
       });
     } catch (err) {
       console.error(err);
       setLoading(false);
+      setProgress(0);
       toast.error("Failed to extract metadata");
     }
   }
@@ -94,7 +101,7 @@ const ExtractMetaData = () => {
       </FileUpload.Root>
       {loading && (
         <div className="w-full max-w-xl mb-6">
-          <div className='mb-2'>Uploading:</div>
+          <div className='mb-2'>{getStatus(progress)}:</div>
           <LinearProgressWithLabel value={progress} />
         </div>
       )}
@@ -105,5 +112,4 @@ const ExtractMetaData = () => {
     </div>
   )
 } 
-
 export default ExtractMetaData

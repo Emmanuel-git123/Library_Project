@@ -76,27 +76,30 @@ const ThesisListing = () => {
 
           else if (filterType === 'supervisor' && (supervisorId || id)) {
             const supervisor = supervisorId || id
+            const matchSupervisor = (t) => {
+              if (!t.supervisor) return false
+              const list = Array.isArray(t.supervisor) ? t.supervisor : [t.supervisor]
+              return list.some(s => (s._id || s) === supervisor)
+            }
+            const getSupName = (t) => {
+              const list = Array.isArray(t?.supervisor) ? t.supervisor : (t?.supervisor ? [t.supervisor] : [])
+              const s = list.find(x => (x._id || x) === supervisor)
+              return s?.name
+            }
 
             if (year) {
               filteredTheses = filteredTheses.filter(
-                thesis =>
-                  thesis.supervisor &&
-                  thesis.supervisor._id === supervisor &&
-                  thesis.year === parseInt(year)
+                thesis => matchSupervisor(thesis) && thesis.year === parseInt(year)
               )
-              const sup = filteredTheses[0]?.supervisor
-              filterTitle = sup
-                ? `Items where Supervisor is '${sup.name}' and Year is '${year}'`
+              const name = getSupName(filteredTheses[0])
+              filterTitle = name
+                ? `Items where Supervisor is '${name}' and Year is '${year}'`
                 : `Supervisor Theses for ${year}`
             } else {
-              filteredTheses = filteredTheses.filter(
-                thesis =>
-                  thesis.supervisor &&
-                  thesis.supervisor._id === supervisor
-              )
-              const sup = filteredTheses[0]?.supervisor
-              filterTitle = sup
-                ? `Items where Supervisor is '${sup.name}'`
+              filteredTheses = filteredTheses.filter(thesis => matchSupervisor(thesis))
+              const name = getSupName(filteredTheses[0])
+              filterTitle = name
+                ? `Items where Supervisor is '${name}'`
                 : 'Supervisor Theses'
             }
           }
