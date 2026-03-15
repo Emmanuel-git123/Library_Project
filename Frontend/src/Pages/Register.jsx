@@ -33,6 +33,7 @@ const Register = () => {
                 },
                 body: JSON.stringify({username,email,password,inviteToken})
             });
+            const data=await res.json();
             if(res.ok){
                 toast.success("Account successfully created");
                 setTimeout(() => {
@@ -40,7 +41,7 @@ const Register = () => {
                 }, 1000);
             } 
             else{
-                toast.error("Error in creating account");
+                toast.error(data.message || "Error creating account");
             }
         } catch (error) {
             console.error('Error fetching data:', error);

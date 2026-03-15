@@ -7,25 +7,43 @@ import { useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { Button, Stack, Text } from "@chakra-ui/react"
 import CommandPalette from "../Components/CommandPalette";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
     const [token,setToken] = useState(false);
     const [role,setRole] = useState(null);
-    const [click,setClick] = useState(false);
     const navigate=useNavigate();
     useEffect(() => {
-        const check=localStorage.getItem("token");
-        if(check){
-            setToken(true);
-            const decoded = jwtDecode(check);
-            setRole(decoded.role);
+        const checkToken=()=>{
+            const token=localStorage.getItem("token");
+            if(token){
+                const decode=jwtDecode(token);
+                if (decode.exp * 1000 < Date.now()) {
+                    toast.success('Log in Session Expired',{duration:2000})
+                    localStorage.removeItem("token");
+                    setToken(false);
+                    setRole(null);
+                    navigate("/");
+                    return;
+                }
+                setToken(true);
+                setRole(decode.role);
+            }
+            else{
+                setToken(false);
+                setRole(null);
+            }
         }
+        checkToken();
+        const interval = setInterval(checkToken, 1000);
+        return () => clearInterval(interval);
     }, [])
 
     const handleLogOut=()=>{
         localStorage.removeItem("token");
         setToken(false);
-        window.location.reload();
+        setRole(null);
+        navigate("/");
     }
     return (
         <div>
@@ -46,7 +64,7 @@ const Navbar = () => {
                     <Link to="/view/supervisor" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Supervisors</Link>
                     <Link to="/view/thesis_type" className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center '>Thesis Type</Link>
                     {token&&<Link to='/view/upload' className='px-3 py-3 transition-all duration-300 transform hover:scale-150 font-bold text-white text-xs hover:text-orange-400 hover:cursor-pointer flex items-center justify-center'>Upload Thesis</Link>}                </div>
-                <div className='bg-grey-500 border border-white px-3 flex justify-between py-0.5 mb-5'>
+                <div className='border border-white px-3 flex justify-between py-0.5 mb-5'>
                     <div className="w-full max-w-3xl px-4 m-3">
                         <div className="flex items-center bg-white rounded-full shadow-lg px-4 py-2 gap-3 hover:outline-none focus:outline-none border">
                             <Search className="text-blue-950" size={22} />
@@ -68,13 +86,13 @@ const Navbar = () => {
                             <span className='relative z-10'>Login</span>
                         </Link>}
                         {token&&role=='HEAD_ADMIN'&&(
-                            // <button onClick={()=>navigate('/admin/invite')} className='px-3 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-xs'>Add Admin</button>
-                            <Stack direction="row" align="center" gap="3">
-                                {/* <Text fontSize="sm">Admin</Text> */}
-                                <Button size="xs" colorPalette="pink" className='shadow-xs hover:shadow-lg'>Add Admin</Button>
-                            </Stack>
+                            <button onClick={()=>navigate('/admin/invite')} className='px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-all text-xs'>Add Admin</button>
+                            // <Stack direction="row" align="center" gap="3">
+                            //     <Text fontSize="sm">Admin</Text>
+                            //     <Button size="xs" colorPalette="pink" className='shadow-xs hover:shadow-lg'>Add Admin</Button>
+                            // </Stack>
                         )}
-                        <Link to='/admin/invite' className='mx-2 underline text-indigo-700 text-sm hover:text-red-500'>Add Admin</Link>
+                        {/* <Link to='/admin/invite' className='mx-2 underline text-indigo-700 text-sm hover:text-red-500'>Add Admin</Link> */}
                     </div>
                 </div>
             </div>

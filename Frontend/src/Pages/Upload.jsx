@@ -4,8 +4,6 @@ import { Toaster, toast } from 'react-hot-toast';
 import { Navigate,useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react'
 import { Field, Input, NativeSelect, Box } from "@chakra-ui/react"
-import Newlist from "../Components/Newlist"
-
 const Upload = () => {
     const [title, setTitle] = useState("");
     const [abstract, setAbstract] = useState("");
@@ -43,6 +41,7 @@ const Upload = () => {
             navigate("/view/upload", { replace: true });
         }
     }, [location, navigate]);
+
     useEffect(() => {
 
         const fetchDepts = async () => {
@@ -105,6 +104,7 @@ const Upload = () => {
             setYear(extractedMeta?.year || "");
             setDegree(extractedMeta?.degreeType || "");
             setPdfFile(pdfFile || null);
+            console.log(extractedMeta?.text);
         }
     }, [location.state]);
 
@@ -390,7 +390,7 @@ const Upload = () => {
                         <div>
                             {['Btech', 'MA', 'MSc','MTech','MTech by Research','PhD'].map((deg) => (
                                 <div key={deg}>
-                                    <input type="checkbox" defaultChecked value={deg} onChange={(e) => setDegree(e.target.value)} checked={degree === deg} id={deg} className='checkbox checkbox-sm text-black' />
+                                    <input type="radio" defaultChecked value={deg} onChange={(e) => setDegree(e.target.value)} checked={degree === deg} id={deg} className='checkbox checkbox-sm text-black' />
                                     <label>{deg}</label>
                                 </div>
                             ))}

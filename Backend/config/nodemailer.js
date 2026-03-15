@@ -16,3 +16,5 @@ transporter.verify((err, success) => {
         console.log("Nodemailer ready to send messages");
     } 
 });
+
+module.exports={transporter};

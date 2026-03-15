@@ -36,9 +36,8 @@ const Login = () => {
             const data=await res.json();
             if(res.ok){
                 localStorage.setItem("token", data.token);
-                toast.success("Login successful");
+                toast.success("Login successful",{duration:1000});
                 navigate("/");
-                window.location.reload();
             }
             else{
                 toast.error("Invalid Credentials");
@@ -48,12 +47,12 @@ const Login = () => {
         } finally{
             setLoading(false);
         }
-        
     }
+
     
     return (
         <div className='flex justify-center'>
-            <Card className="relative w-[400px] overflow-hidden gap-4 shadow-2xl">
+            <Card className="relative w-[400px] h-fit overflow-hidden gap-4 shadow-2xl">
                 <CardHeader>
                     <CardTitle>Login</CardTitle>
                     <CardDescription>
@@ -62,13 +61,11 @@ const Login = () => {
                 </CardHeader>
                 <CardContent>
                     <form>
-                        <div className="grid w-full items-center gap-2">
+                        <div className="grid w-full items-center gap-4">
                             <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="email">{email}</Label>
                                 <Input value={email} onChange={(e)=>setEmail(e.target.value)} id="email" type="email" placeholder="Enter your email" />
                             </div>
                             <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="password">{password}</Label>
                                 <Input
                                     id="password"
                                     type="password"

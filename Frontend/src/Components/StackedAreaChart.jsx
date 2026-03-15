@@ -10,6 +10,7 @@ export default function StackedAreaChart() {
   const [yearData, setYearData] = useState([]);
   const [projectYearData, setProjectYearData] = useState([]);
   const [dissertationsYearData,setDissertationsYearCounts] = useState([]);
+  const [thesesYearData,setThesesYearData] = useState([]);
 
   useEffect(() => {
     const fetchYears = async () => {
@@ -27,7 +28,7 @@ export default function StackedAreaChart() {
           setYears(uniqueYears);
 
           const yearCounts = uniqueYears.map((year) => {
-            return thesesData.filter((t) => t.degreeType === "MSc").filter((t)=>t.year===year).length;
+            return thesesData.filter((t) => (t.degreeType === "MSc"||t.degreeType === "MA"||t.degreeType === "MTech"||t.degreeType === "MTech by Research")).filter((t)=>t.year===year).length;
           });
 
           const projectYearCounts=uniqueYears.map((year)=>{
@@ -35,12 +36,17 @@ export default function StackedAreaChart() {
           });
 
           const dissertationsYearCounts=uniqueYears.map((year)=>{
-            return thesesData.filter((t)=>t.degreeType==="MA").filter((t)=>t.year===year).length;
+            return thesesData.filter((t)=>(t.degreeType === "MSc"||t.degreeType === "MA"||t.degreeType === "MTech"||t.degreeType === "MTech by Research")).filter((t)=>t.year===year).length;
+          });
+
+          const thesesYearCounts=uniqueYears.map((year)=>{
+            return thesesData.filter((t)=>(t.degreeType === "PhD")).filter((t)=>t.year===year).length;
           });
 
           setYearData(yearCounts);
           setProjectYearData(projectYearCounts);
           setDissertationsYearCounts(dissertationsYearCounts);
+          setThesesYearData(thesesYearCounts);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -57,7 +63,7 @@ export default function StackedAreaChart() {
           series={[
               { data: projectYearData, label: 'Projects', area: true, stack: 'total', showMark: false },
               {
-                  data: yearData,
+                  data: thesesYearData,
                   label: 'Theses',
                   area: true,
                   stack: 'total',

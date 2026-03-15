@@ -1,16 +1,19 @@
 const {Admin} = require("../../models/Admin");
 const {Invite} = require('../../models/Invite');
 const bcrypt = require("bcrypt");
-const nodemailer = require("nodemailer");
+const {transporter} = require("../../config/nodemailer");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const dotenv=require('dotenv');
+
+dotenv.config();
 
 const generateToken = (user) => {
     return jwt.sign(
         {
             id: user._id,
-            role: user.role
+            role: user.role,
+            status: user.status
         },
         process.env.JWT_SECRET,
         {
@@ -28,6 +31,9 @@ const userLogin = async(req,res)=>{
         const check_user=await Admin.findOne({email});
         if(!check_user){
             return res.status(404).json({ message: "User not found" });
+        }
+        if (check_user.status !== "active") {
+            return res.status(403).json({ message: "Account not active" });
         }
         const same_pass=await bcrypt.compare(password,check_user.password);
         if(!same_pass){
@@ -48,10 +54,11 @@ const userRegister = async(req,res)=>{
             return res.status(400).json({message:"Missing required fields"});
         }
         const invite = await Invite.findOne({
-            token: inviteToken,
-            used: false,
-            expiresAt: { $gt: new Date() }
-        });
+                token: inviteToken,
+                used: false,
+                expiresAt: { $gt: new Date() }
+            },  
+        );
         if (!invite) {
             return res.status(400).json({ message: "Invalid or expired invite" });
         }
@@ -64,9 +71,9 @@ const userRegister = async(req,res)=>{
             return res.status(409).json({message:"Email already exists"});
         }
         const hashPass=await bcrypt.hash(password,10);
-        const newAdmin=new Admin({username,email,password:hashPass,role: "ADMIN"});
+        const newAdmin=new Admin({username,email,password:hashPass,role: "ADMIN",status:"active"});
         await newAdmin.save();
-        
+                
         invite.used = true;
         await invite.save();
         
@@ -93,19 +100,6 @@ const acceptInvite=async(req,res)=>{
 
         const token = crypto.randomBytes(32).toString("hex");
         const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
-        const newInvite = new Invite({email,token,expiresAt,createdBy: req.user.id,});
-        await newInvite.save();
-
-        const transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com", 
-            port: 587,
-            secure: false,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
-        });
         const inviteLink = `${process.env.FRONTEND_URL}/register?inviteToken=${token}`;
 
         await transporter.sendMail({
@@ -116,6 +110,8 @@ const acceptInvite=async(req,res)=>{
                 <a href="${inviteLink}">Accept Invite</a>
                 <p>This link expires in 24 hours.</p>`
         });
+        const newInvite = new Invite({email,token,expiresAt,createdBy: req.user.id,});
+        await newInvite.save();
 
         res.status(200).json({ message: "Invite sent successfully" });
 

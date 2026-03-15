@@ -51,6 +51,7 @@ const App = () => {
         <Route path='/view/supervisor/:supervisorId/year/:year' element={<ThesisListing/>}/>
         <Route path='/view/thesis_type' element={<ThesisType/>}/>
         <Route path='/view/thesis_type/:id' element={<ThesisListing/>}/>
+        <Route path='/view/upload/submit/:id' element={<ProtectedRoute> <Upload/></ProtectedRoute>}/>
         <Route path='/view/upload/submit' element={<ProtectedRoute> <Upload/></ProtectedRoute>}/>
         <Route path='/view/pdf/:id' element={<ProtectedRoute><PDFViewer/></ProtectedRoute>}/>
         <Route path='/view/upload' element={<ProtectedRoute> <ExtractMetaData/></ProtectedRoute>}/>

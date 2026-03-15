@@ -8,6 +8,7 @@ const { uploadToS3 } = require("../../utils/s3");
 const { S3Client } = require("@aws-sdk/client-s3");
 const { GetObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const { User } = require("../../models/User");
 require('dotenv').config();
 
 const cleanText = (text) => {
@@ -79,7 +80,15 @@ const extractKeywordsFromText = (text) => {
     .filter(Boolean);
 };
 
+const cutText=(text)=>{
+    const tocPattern = /(table\s*of\s*contents|^\s*contents\s*$)/im;
 
+    const index = text.search(tocPattern);
+
+    if (index === -1) return text;
+
+    return text.slice(0, index);
+}
 
 const extractMetadata = async (req, res) => {
     try {
@@ -88,7 +97,9 @@ const extractMetadata = async (req, res) => {
         }
         const buffer=req.file.buffer;
         const data = await pdf(buffer);
-        const text=data.text;
+        const fullText=data.text;
+
+        const text=cutText(fullText);
 
         const abstract=extractAbstract(text);
 
@@ -102,7 +113,7 @@ const extractMetadata = async (req, res) => {
         const degreeType = extractDegree(text);
         const year = extractYear(text);
 
-        res.status(200).json({abstract,keywords,title,degreeType,year});
+        res.status(200).json({text,abstract,keywords,title,degreeType,year});
         
         // const cloudRes = await uploadToCloud(buffer);
         // res.status(200).json({extractedData, pdfUrl: cloudRes.secure_url});
@@ -220,7 +231,18 @@ const deleteThesis = async (req, res) => {
 
 const updateThesis = async (req, res) => {
     try {
-        const thesis = await Thesis.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const updatedData = {
+            title: req.body.title,
+            abstract: req.body.abstract,
+            author: req.body.author,
+            supervisor: req.body.supervisor,
+            departmentId: req.body.departmentId,
+            subjectId: req.body.subjectId,
+            degreeType: req.body.degreeType,
+            year: req.body.year,
+            keywords: req.body.keywords ? JSON.parse(req.body.keywords) : []
+        };
+        const thesis = await Thesis.findByIdAndUpdate(req.params.id, updatedData, { new: true });
         res.status(200).json({ thesis });
     } catch (error) {
         console.error("Error in the updateThesis function:", error);

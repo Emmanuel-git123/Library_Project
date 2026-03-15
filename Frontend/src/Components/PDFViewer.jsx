@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
+import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { useParams, useSearchParams } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
-import toast from "react-hot-toast";
-import pdfWorker from "pdfjs-dist/build/pdf.worker?url";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-
-pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 const PDFViewer = () => {
   const { id } = useParams();
   const [fileUrl, setFileUrl] = useState(null);
@@ -60,8 +57,8 @@ const PDFViewer = () => {
       {fileUrl && <Document file={fileUrl} onLoadSuccess={onDocumentLoadSuccess} loading={<div>Loading PDF...</div>}>
       {numPages &&Array.from(new Array(numPages),(el,index)=>(
         <div key={index} className="mb-6 flex justify-center">
-          <div className="text-8xl opacity-60 absolute text-gray-100 z-10 rotate-45 self-center items-center">{name}</div>
           <Page scale={1.2} pageNumber={index+1}  renderTextLayer={false} renderAnnotationLayer={true} />
+          <div className="text-8xl opacity-60 absolute text-gray-100 z-10 rotate-45 self-center items-center">{name}</div>
         </div>
       ))}
       </Document>}

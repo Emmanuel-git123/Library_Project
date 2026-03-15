@@ -17,6 +17,17 @@ const AdminInvite = () => {
       setLoading(true);
 
       const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("You must be logged in");
+        return;
+      }
+
+      const emailRegex = /\S+@\S+\.\S+/;
+
+      if (!emailRegex.test(email)) {
+        toast.error("Invalid email format");
+        return;
+      }
 
       const res = await fetch("http://localhost:8081/api/auth/accept-invite", {
         method: "POST",
@@ -34,7 +45,7 @@ const AdminInvite = () => {
         return;
       }
 
-      toast.success("Invite sent successfully ✉️");
+      toast.success("Invite sent successfully");
       setEmail("");
 
     } catch (err) {

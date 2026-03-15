@@ -5,46 +5,74 @@ import { Button, ButtonGroup } from "@chakra-ui/react"
 import { useState } from 'react'
 import toast from "react-hot-toast";
 import { useNavigate } from 'react-router-dom'
+import LinearProgress from "@mui/material/LinearProgress";
+import Typography from "@mui/material/Typography";
+import PropTypes from "prop-types";
+import axios from "axios";
+
+function LinearProgressWithLabel(props) {
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ width: '100%', mr: 1 }}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box sx={{ minWidth: 35 }}>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          {`${Math.round(props.value)}%`}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
+
+LinearProgressWithLabel.propTypes = {
+  value: PropTypes.number.isRequired,
+};
 
 const ExtractMetaData = () => {
   const [file,setFile]=useState(null);
   const [loading,setLoading]=useState(false);
+  const [progress, setProgress] = useState(0);
+
   const navigate=useNavigate();
+
   const handleClick= async ()=>{
-    setLoading(true);
     if (!file) {
       toast.error("Please upload a file first");
-      setLoading(false);
       return;
     }
+    setLoading(true);
+    setProgress(0);
+
     const formData=new FormData();
     formData.append("pdf",file);
+
     const token=localStorage.getItem("token");
+
     try {
-      const res=await fetch("http://localhost:8081/api/thesis/extract",{
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-      const data = await res.json();
-      // console.log(data.text);
-      if(!res.ok){
-        toast.error("Extraction Failed!");
-        setLoading(false);
-        return;
-      }
-      else{
-        toast.success("Metadata extracted!");
-        setLoading(true);
-        navigate("/view/upload/submit", {
-          state: {
-            extractedMeta: data,
-            pdfFile: file
+      const res=await axios.post("http://localhost:8081/api/thesis/extract",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          onUploadProgress: (progressEvent) => {
+            const percent = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setProgress(percent);
           }
-        });
-      }
+        }
+      );
+      const data=res.data; 
+      toast.success("Metadata extracted!");
+
+      navigate("/view/upload/submit",{
+        state:{
+          extractedMeta:data,
+          pdfFile:file
+        }
+      });
     } catch (err) {
       console.error(err);
       setLoading(false);
@@ -57,17 +85,21 @@ const ExtractMetaData = () => {
       <FileUpload.Root onFileAccept={({files}) => {setFile(files[0]);}} maxW="xl" alignItems="stretch" accept=".pdf" className='mb-8 cursor-pointer' maxFiles={1}>
         <FileUpload.HiddenInput />
         <FileUpload.Dropzone>
-          <Icon size="md" color="fg.muted">
-            <LuUpload />
-          </Icon>
+          <Icon as={LuUpload} boxSize="6" color="fg.muted" />
           <FileUpload.DropzoneContent>
             <Box>Drag and drop files here</Box>
           </FileUpload.DropzoneContent>
         </FileUpload.Dropzone>
         <FileUpload.List />
       </FileUpload.Root>
+      {loading && (
+        <div className="w-full max-w-xl mb-6">
+          <div className='mb-2'>Uploading:</div>
+          <LinearProgressWithLabel value={progress} />
+        </div>
+      )}
       <ButtonGroup size="sm" className='mb-8' variant="outline">
-      {!loading?(<Button disabled={!file} onClick={handleClick} colorPalette="blue">Save</Button>):(<Button disabled className='transition-all' colorPalette="green">Saving...</Button>)}
+      {!loading?(<Button disabled={!file} onClick={handleClick} colorPalette="blue">Save</Button>):(<Button disabled className='transition-all' colorPalette="green">Uploading...</Button>)}
       <Button onClick={()=>window.location.reload()}>Cancel</Button>
     </ButtonGroup>
     </div>
