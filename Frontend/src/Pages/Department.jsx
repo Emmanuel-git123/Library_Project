@@ -53,7 +53,7 @@ const Department = () => {
             <div className='text-md hover:text-blue-600 '>
               <Link to="/view/dept/all">Departments({getTotalCount()}) :</Link>
             </div>
-            <div className='grid grid-cols-2 border-2 gap-10'>
+            <div className='grid grid-cols-2 gap-5'>
             {departments.map(dept=> (
               <div key={dept._id} className="w-full text-sm border-4 rounded-2xl bg-gray-100 text-center px-2.5 py-5 flex justify-center items-center">
                 <div>
